@@ -8,52 +8,47 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeForm() {
     // Tampilkan halaman pertama
     showPage(1);
-    
-    // Set nilai default untuk testing (opsional)
-    setDefaultValues();
-}
-
-// Set nilai default untuk testing
-function setDefaultValues() {
-    // Halaman 1
-    document.querySelector('#page-1 input[type="text"]').value = 'WIHARJO';
-    document.querySelector('#page-1 input[type="text"]:nth-child(2)').value = '55165';
-    document.querySelector('#page-1 input[value="Pria"]').checked = true;
-    
-    // Halaman 2
-    document.querySelector('#page-2 select').value = 'Kantor Pusat';
-    document.querySelectorAll('#page-2 select')[1].value = 'Supervisor Perawatan Perbaikan UPT Resor';
 }
 
 // Mengatur event listener
 function setupEventListeners() {
-    // Navigation buttons
+    // Navigation buttons - Halaman 1 ke 2
     document.getElementById('next-to-page2').addEventListener('click', function() {
         if (validatePage(1)) {
             showPage(2);
         }
     });
     
+    // Navigation buttons - Halaman 2 ke 1
     document.getElementById('back-to-page1').addEventListener('click', function() {
         showPage(1);
     });
     
+    // Navigation buttons - Halaman 2 ke 3
     document.getElementById('next-to-page3').addEventListener('click', function() {
+        // Di halaman 2, penilaian ITCS-MS tidak wajib diisi semua
+        // Cukup validasi field required saja
         if (validatePage(2)) {
             showPage(3);
         }
     });
     
+    // Navigation buttons - Halaman 3 ke 2
     document.getElementById('back-to-page2').addEventListener('click', function() {
         showPage(2);
     });
     
-    // Clear buttons
-    document.querySelectorAll('.btn-clear').forEach(button => {
-        button.addEventListener('click', function() {
-            const currentPage = getCurrentPage();
-            clearPage(currentPage);
-        });
+    // Clear buttons untuk setiap halaman
+    document.getElementById('clear-page1').addEventListener('click', function() {
+        clearPage(1);
+    });
+    
+    document.getElementById('clear-page2').addEventListener('click', function() {
+        clearPage(2);
+    });
+    
+    document.getElementById('clear-page3').addEventListener('click', function() {
+        clearPage(3);
     });
     
     // Form submission
@@ -75,10 +70,53 @@ function setupEventListeners() {
             highlightTableRow(this);
         });
     });
+    
+    // Validasi real-time untuk input text dan select
+    setupRealTimeValidation();
+}
+
+// Setup real-time validation
+function setupRealTimeValidation() {
+    // Input text
+    document.querySelectorAll('.text-input[required]').forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+    });
+    
+    // Select dropdowns
+    document.querySelectorAll('.dropdown-input[required]').forEach(select => {
+        select.addEventListener('change', function() {
+            validateField(this);
+        });
+    });
+    
+    // Radio buttons
+    document.querySelectorAll('input[type="radio"][required]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const radioGroup = document.querySelectorAll(`input[name="${this.name}"]`);
+            let isValid = false;
+            
+            radioGroup.forEach(r => {
+                if (r.checked) {
+                    isValid = true;
+                    markValid(r);
+                }
+            });
+            
+            if (!isValid) {
+                radioGroup.forEach(r => {
+                    markInvalid(r);
+                });
+            }
+        });
+    });
 }
 
 // Fungsi untuk menampilkan halaman tertentu
 function showPage(pageNumber) {
+    console.log(`Navigating to page ${pageNumber}`);
+    
     // Sembunyikan semua halaman
     document.querySelectorAll('.form-page').forEach(page => {
         page.classList.remove('active');
@@ -91,180 +129,330 @@ function showPage(pageNumber) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Fungsi untuk mendapatkan halaman saat ini
-function getCurrentPage() {
-    const activePage = document.querySelector('.form-page.active');
-    return parseInt(activePage.id.split('-')[1]);
-}
-
 // Fungsi untuk validasi halaman
 function validatePage(pageNumber) {
+    console.log(`Validating page ${pageNumber}`);
     let isValid = true;
     let firstInvalidField = null;
     
     if (pageNumber === 1) {
         // Validasi halaman 1
-        const inputs = document.querySelectorAll('#page-1 input[required]');
-        inputs.forEach(input => {
-            if (input.type === 'text' && !input.value.trim()) {
-                markInvalid(input);
-                isValid = false;
-                if (!firstInvalidField) firstInvalidField = input;
-            } else if (input.type === 'radio') {
-                // Untuk radio buttons, cek apakah ada yang dipilih
-                const radioGroup = document.querySelectorAll(`input[name="${input.name}"]`);
-                const isChecked = Array.from(radioGroup).some(radio => radio.checked);
-                if (!isChecked) {
-                    // Tandai semua radio dalam grup sebagai invalid
-                    radioGroup.forEach(radio => {
-                        radio.parentElement.classList.add('invalid');
-                    });
-                    isValid = false;
-                } else {
-                    radioGroup.forEach(radio => {
-                        radio.parentElement.classList.remove('invalid');
-                    });
-                }
-            } else {
-                markValid(input);
-            }
-        });
-    } else if (pageNumber === 2) {
-        // Validasi halaman 2
-        const selects = document.querySelectorAll('#page-2 select[required]');
-        selects.forEach(select => {
-            if (!select.value) {
-                markInvalid(select);
-                isValid = false;
-                if (!firstInvalidField) firstInvalidField = select;
-            } else {
-                markValid(select);
-            }
-        });
+        const namaInput = document.getElementById('nama-lengkap');
+        const nippInput = document.getElementById('nipp');
+        const genderRadios = document.querySelectorAll('input[name="gender"]');
         
-        // Validasi minimal satu item penilaian diisi
-        const assessmentItems = document.querySelectorAll('#page-2 input[type="radio"]:checked');
-        if (assessmentItems.length === 0) {
-            alert('Harap isi minimal satu item penilaian ITCS-MS.');
+        // Validasi Nama
+        if (!namaInput.value.trim()) {
+            markInvalid(namaInput);
             isValid = false;
+            firstInvalidField = namaInput;
+        } else {
+            markValid(namaInput);
         }
+        
+        // Validasi NIPP
+        if (!nippInput.value.trim()) {
+            markInvalid(nippInput);
+            isValid = false;
+            if (!firstInvalidField) firstInvalidField = nippInput;
+        } else {
+            markValid(nippInput);
+        }
+        
+        // Validasi Jenis Kelamin
+        const isGenderSelected = Array.from(genderRadios).some(radio => radio.checked);
+        if (!isGenderSelected) {
+            // Tandai semua radio dalam grup sebagai invalid
+            genderRadios.forEach(radio => {
+                markInvalid(radio);
+            });
+            isValid = false;
+        } else {
+            genderRadios.forEach(radio => {
+                markValid(radio);
+            });
+        }
+        
+    } else if (pageNumber === 2) {
+        // Validasi halaman 2 - HANYA field required (dropdowns)
+        const kedudukanSelect = document.getElementById('kedudukan');
+        const jabatanSelect = document.getElementById('jabatan');
+        
+        // Validasi Kedudukan
+        if (!kedudukanSelect.value) {
+            markInvalid(kedudukanSelect);
+            isValid = false;
+            firstInvalidField = kedudukanSelect;
+        } else {
+            markValid(kedudukanSelect);
+        }
+        
+        // Validasi Jabatan
+        if (!jabatanSelect.value) {
+            markInvalid(jabatanSelect);
+            isValid = false;
+            if (!firstInvalidField) firstInvalidField = jabatanSelect;
+        } else {
+            markValid(jabatanSelect);
+        }
+        
+        // Di halaman 2, penilaian ITCS-MS TIDAK wajib diisi semua
+        // Jadi tidak perlu validasi radio buttons
+        
     } else if (pageNumber === 3) {
-        // Validasi halaman 3
-        // Cek apakah ada penilaian yang diisi
-        const assessmentItems = document.querySelectorAll('#page-3 input[type="radio"]:checked');
-        if (assessmentItems.length === 0) {
-            alert('Harap isi minimal satu item penilaian lanjutan ITCS-MS.');
-            isValid = false;
-        }
+        // Validasi halaman 3 - Tidak ada field required
+        // Hanya validasi jika mau submit
+        
+        // Di halaman 3, tidak ada field yang required
+        // User bisa submit meskipun tidak mengisi penilaian lanjutan
+        console.log('Page 3 validation passed (no required fields)');
     }
     
-    // Focus ke field pertama yang invalid
-    if (firstInvalidField) {
+    // Tampilkan pesan jika ada error
+    if (!isValid && firstInvalidField) {
+        console.log('Validation failed for field:', firstInvalidField);
         firstInvalidField.focus();
+        
+        // Tambahkan pesan error di atas form
+        showErrorMessage('Harap isi semua field yang wajib diisi.');
+    } else if (isValid) {
+        // Hapus pesan error jika ada
+        hideErrorMessage();
     }
     
     return isValid;
 }
 
+// Fungsi untuk validasi field individual
+function validateField(field) {
+    if (field.type === 'text') {
+        if (!field.value.trim()) {
+            markInvalid(field);
+            return false;
+        } else {
+            markValid(field);
+            return true;
+        }
+    } else if (field.tagName === 'SELECT') {
+        if (!field.value) {
+            markInvalid(field);
+            return false;
+        } else {
+            markValid(field);
+            return true;
+        }
+    } else if (field.type === 'radio') {
+        const radioGroup = document.querySelectorAll(`input[name="${field.name}"]`);
+        const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+        
+        if (!isChecked) {
+            radioGroup.forEach(radio => markInvalid(radio));
+            return false;
+        } else {
+            radioGroup.forEach(radio => markValid(radio));
+            return true;
+        }
+    }
+    
+    return true;
+}
+
 // Fungsi untuk menandai field sebagai invalid
 function markInvalid(field) {
-    field.style.borderColor = '#ea4335';
-    field.style.boxShadow = '0 0 0 2px rgba(234, 67, 53, 0.2)';
+    if (field.type === 'radio') {
+        // Untuk radio buttons, tandai parent label
+        const parentLabel = field.closest('.radio-option') || field.closest('.radio-table');
+        if (parentLabel) {
+            parentLabel.classList.add('invalid');
+            
+            // Tambahkan border merah pada radio circle
+            const radioCircle = parentLabel.querySelector('.radio-circle');
+            if (radioCircle) {
+                radioCircle.style.borderColor = '#ea4335';
+            }
+        }
+    } else {
+        field.style.borderColor = '#ea4335';
+        field.style.boxShadow = '0 0 0 2px rgba(234, 67, 53, 0.2)';
+    }
     
-    // Tambahkan pesan error jika belum ada
-    let errorMessage = field.nextElementSibling;
-    if (!errorMessage || !errorMessage.classList.contains('error-message')) {
-        errorMessage = document.createElement('div');
-        errorMessage.className = 'error-message';
-        errorMessage.style.color = '#ea4335';
-        errorMessage.style.fontSize = '0.9rem';
-        errorMessage.style.marginTop = '5px';
-        errorMessage.textContent = 'Field ini wajib diisi';
-        field.parentNode.insertBefore(errorMessage, field.nextSibling);
+    // Hapus class valid jika ada
+    if (field.type !== 'radio') {
+        field.classList.remove('valid');
+        field.classList.add('invalid');
     }
 }
 
 // Fungsi untuk menandai field sebagai valid
 function markValid(field) {
-    field.style.borderColor = '#34a853';
-    field.style.boxShadow = '0 0 0 2px rgba(52, 168, 83, 0.2)';
-    
-    // Hapus pesan error jika ada
-    const errorMessage = field.nextElementSibling;
-    if (errorMessage && errorMessage.classList.contains('error-message')) {
-        errorMessage.remove();
+    if (field.type === 'radio') {
+        // Untuk radio buttons, hapus invalid dari parent label
+        const parentLabel = field.closest('.radio-option') || field.closest('.radio-table');
+        if (parentLabel) {
+            parentLabel.classList.remove('invalid');
+            
+            // Reset border radio circle
+            const radioCircle = parentLabel.querySelector('.radio-circle');
+            if (radioCircle) {
+                if (field.checked) {
+                    radioCircle.style.borderColor = '#4285f4';
+                } else {
+                    radioCircle.style.borderColor = '#dadce0';
+                }
+            }
+        }
+    } else {
+        field.style.borderColor = '#34a853';
+        field.style.boxShadow = '0 0 0 2px rgba(52, 168, 83, 0.2)';
+        
+        // Reset ke border default setelah beberapa detik
+        setTimeout(() => {
+            field.style.borderColor = '';
+            field.style.boxShadow = '';
+        }, 2000);
     }
     
-    // Reset ke border default setelah beberapa detik
-    setTimeout(() => {
-        field.style.borderColor = '';
-        field.style.boxShadow = '';
-    }, 2000);
+    // Hapus class invalid jika ada
+    if (field.type !== 'radio') {
+        field.classList.remove('invalid');
+        field.classList.add('valid');
+    }
+}
+
+// Fungsi untuk menampilkan pesan error
+function showErrorMessage(message) {
+    // Hapus pesan error sebelumnya jika ada
+    hideErrorMessage();
+    
+    // Buat elemen pesan error
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message-global';
+    errorDiv.style.backgroundColor = '#fce8e6';
+    errorDiv.style.color = '#c5221f';
+    errorDiv.style.padding = '16px';
+    errorDiv.style.marginBottom = '20px';
+    errorDiv.style.borderRadius = '4px';
+    errorDiv.style.borderLeft = '4px solid #ea4335';
+    errorDiv.style.fontSize = '14px';
+    errorDiv.innerHTML = `<strong><i class="fas fa-exclamation-circle"></i> Perhatian:</strong> ${message}`;
+    
+    // Tambahkan ke form
+    const formSection = document.querySelector('.form-section');
+    if (formSection) {
+        formSection.insertBefore(errorDiv, formSection.firstChild);
+    }
+}
+
+// Fungsi untuk menyembunyikan pesan error
+function hideErrorMessage() {
+    const existingError = document.querySelector('.error-message-global');
+    if (existingError) {
+        existingError.remove();
+    }
 }
 
 // Fungsi untuk mengosongkan halaman
 function clearPage(pageNumber) {
+    console.log(`Clearing page ${pageNumber}`);
+    
     if (pageNumber === 1) {
-        const inputs = document.querySelectorAll('#page-1 input');
-        inputs.forEach(input => {
-            if (input.type === 'text') {
-                input.value = '';
-            } else if (input.type === 'radio') {
-                input.checked = false;
-                input.parentElement.classList.remove('invalid');
+        // Clear halaman 1
+        document.getElementById('nama-lengkap').value = '';
+        document.getElementById('nipp').value = '';
+        
+        // Clear radio buttons
+        document.querySelectorAll('#page-1 input[type="radio"]').forEach(radio => {
+            radio.checked = false;
+            const parentLabel = radio.closest('.radio-option');
+            if (parentLabel) {
+                parentLabel.classList.remove('invalid');
+                const radioCircle = parentLabel.querySelector('.radio-circle');
+                if (radioCircle) {
+                    radioCircle.style.borderColor = '#dadce0';
+                }
             }
-            
-            // Reset validasi styling
+        });
+        
+        // Reset styling
+        document.querySelectorAll('#page-1 input').forEach(input => {
             input.style.borderColor = '';
             input.style.boxShadow = '';
-            const errorMessage = input.nextElementSibling;
-            if (errorMessage && errorMessage.classList.contains('error-message')) {
-                errorMessage.remove();
-            }
-        });
-    } else if (pageNumber === 2) {
-        // Clear selects
-        document.querySelectorAll('#page-2 select').forEach(select => {
-            select.value = '';
-            select.style.borderColor = '';
-            select.style.boxShadow = '';
-            
-            const errorMessage = select.nextElementSibling;
-            if (errorMessage && errorMessage.classList.contains('error-message')) {
-                errorMessage.remove();
-            }
+            input.classList.remove('invalid', 'valid');
         });
         
-        // Clear radio buttons
+    } else if (pageNumber === 2) {
+        // Clear halaman 2
+        document.getElementById('kedudukan').value = '';
+        document.getElementById('jabatan').value = '';
+        
+        // Clear radio buttons di tabel
         document.querySelectorAll('#page-2 input[type="radio"]').forEach(radio => {
             radio.checked = false;
-            radio.parentElement.classList.remove('selected');
-        });
-    } else if (pageNumber === 3) {
-        // Clear radio buttons
-        document.querySelectorAll('#page-3 input[type="radio"]').forEach(radio => {
-            radio.checked = false;
-            radio.parentElement.classList.remove('selected');
+            const parentLabel = radio.closest('.radio-table');
+            if (parentLabel) {
+                parentLabel.classList.remove('invalid');
+                const radioCircle = parentLabel.querySelector('.radio-circle');
+                if (radioCircle) {
+                    radioCircle.style.borderColor = '#dadce0';
+                }
+            }
         });
         
-        // Clear textarea
-        const textarea = document.querySelector('#page-3 textarea');
-        if (textarea) {
-            textarea.value = '';
+        // Reset styling
+        document.querySelectorAll('#page-2 select').forEach(select => {
+            select.style.borderColor = '';
+            select.style.boxShadow = '';
+            select.classList.remove('invalid', 'valid');
+        });
+        
+        // Reset highlight baris tabel
+        document.querySelectorAll('#page-2 .table-row').forEach(row => {
+            row.style.backgroundColor = '';
+        });
+        
+    } else if (pageNumber === 3) {
+        // Clear halaman 3
+        document.getElementById('komentar').value = '';
+        
+        // Clear radio buttons di tabel
+        document.querySelectorAll('#page-3 input[type="radio"]').forEach(radio => {
+            radio.checked = false;
+            const parentLabel = radio.closest('.radio-table');
+            if (parentLabel) {
+                parentLabel.classList.remove('invalid');
+                const radioCircle = parentLabel.querySelector('.radio-circle');
+                if (radioCircle) {
+                    radioCircle.style.borderColor = '#dadce0';
+                }
+            }
+        });
+        
+        // Reset styling
+        document.querySelectorAll('#page-3 textarea').forEach(textarea => {
             textarea.style.borderColor = '';
             textarea.style.boxShadow = '';
-        }
+            textarea.classList.remove('invalid', 'valid');
+        });
+        
+        // Reset highlight baris tabel
+        document.querySelectorAll('#page-3 .table-row').forEach(row => {
+            row.style.backgroundColor = '';
+        });
     }
     
-    alert('Form telah dibersihkan.');
+    // Hapus pesan error global
+    hideErrorMessage();
+    
+    alert('Form pada halaman ini telah dibersihkan.');
 }
 
 // Fungsi untuk highlight baris tabel saat radio dipilih
 function highlightTableRow(radio) {
     const row = radio.closest('.table-row');
     
-    // Hapus highlight dari semua baris
-    document.querySelectorAll('.table-row').forEach(r => {
+    // Reset semua baris di tabel yang sama
+    const table = row.closest('.assessment-table');
+    table.querySelectorAll('.table-row').forEach(r => {
         r.style.backgroundColor = '';
     });
     
@@ -276,6 +464,8 @@ function highlightTableRow(radio) {
 
 // Fungsi untuk mengirim form
 function submitForm() {
+    console.log('Submitting form...');
+    
     // Kumpulkan data dari form
     const formData = collectFormData();
     
@@ -293,19 +483,21 @@ function submitForm() {
 function collectFormData() {
     const data = {
         // Data pribadi
-        nama: document.querySelector('#page-1 input[type="text"]').value,
-        nipp: document.querySelector('#page-1 input[type="text"]:nth-child(2)').value,
-        jenisKelamin: document.querySelector('#page-1 input[name="gender"]:checked')?.value,
+        nama: document.getElementById('nama-lengkap').value,
+        nipp: document.getElementById('nipp').value,
+        jenisKelamin: document.querySelector('input[name="gender"]:checked')?.value,
         
         // Data jabatan
-        kedudukan: document.querySelector('#page-2 select').value,
-        jabatan: document.querySelectorAll('#page-2 select')[1].value,
+        kedudukan: document.getElementById('kedudukan').value,
+        jabatan: document.getElementById('jabatan').value,
         
         // Komentar
-        komentar: document.querySelector('#page-3 textarea')?.value,
+        komentar: document.getElementById('komentar')?.value,
         
         // Timestamp
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        date: new Date().toLocaleDateString('id-ID'),
+        time: new Date().toLocaleTimeString('id-ID')
     };
     
     return data;
@@ -318,22 +510,41 @@ function calculateAssessmentResults() {
         itemsAnswered: 0,
         totalScore: 0,
         averageScore: 0,
-        scoresByItem: {}
+        scoresByItem: {},
+        itemsByPage: { page2: 0, page3: 0 }
     };
     
-    // Hitung semua item penilaian dari semua halaman
-    document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
-        if (radio.name.startsWith('itcs-')) {
+    // Hitung item dari halaman 2 (1-5)
+    for (let i = 1; i <= 5; i++) {
+        const radio = document.querySelector(`input[name="itcs-${i}"]:checked`);
+        if (radio) {
             results.totalItems++;
             results.itemsAnswered++;
+            results.itemsByPage.page2++;
             
             const score = parseInt(radio.value);
             results.totalScore += score;
-            
-            // Simpan skor per item
-            results.scoresByItem[radio.name] = score;
+            results.scoresByItem[`itcs-${i}`] = score;
+        } else {
+            results.totalItems++;
         }
-    });
+    }
+    
+    // Hitung item dari halaman 3 (25-29)
+    for (let i = 25; i <= 29; i++) {
+        const radio = document.querySelector(`input[name="itcs-${i}"]:checked`);
+        if (radio) {
+            results.totalItems++;
+            results.itemsAnswered++;
+            results.itemsByPage.page3++;
+            
+            const score = parseInt(radio.value);
+            results.totalScore += score;
+            results.scoresByItem[`itcs-${i}`] = score;
+        } else {
+            results.totalItems++;
+        }
+    }
     
     // Hitung rata-rata
     if (results.itemsAnswered > 0) {
@@ -358,11 +569,15 @@ function calculateAssessmentResults() {
     } else if (avgScore >= 1.5) {
         results.category = 'Kurang';
         results.categoryColor = '#ea4335';
-    } else {
+    } else if (avgScore > 0) {
         results.category = 'Sangat Kurang';
         results.categoryColor = '#d93025';
+    } else {
+        results.category = 'Belum Dinilai';
+        results.categoryColor = '#5f6368';
     }
     
+    console.log('Assessment results:', results);
     return results;
 }
 
@@ -382,11 +597,14 @@ function saveDataToStorage(formData, assessmentResults) {
     // Simpan kembali ke localStorage
     localStorage.setItem('evaluations', JSON.stringify(allSubmissions));
     
-    console.log('Data tersimpan:', submission);
+    console.log('Data tersimpan ke localStorage:', submission);
+    console.log('Total submissions:', allSubmissions.length);
 }
 
 // Fungsi untuk menampilkan pesan terima kasih
 function showThankYouMessage() {
+    console.log('Showing thank you message');
+    
     // Sembunyikan form
     document.querySelector('form').style.display = 'none';
     
@@ -399,19 +617,40 @@ function showThankYouMessage() {
 
 // Fungsi untuk mereset form
 function resetForm() {
+    console.log('Resetting form');
+    
     // Reset semua input form
     document.getElementById('evaluation-form').reset();
     
     // Reset radio buttons
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
         radio.checked = false;
-        radio.parentElement.classList.remove('selected');
+        
+        // Reset styling radio
+        const parentLabel = radio.closest('.radio-option') || radio.closest('.radio-table');
+        if (parentLabel) {
+            parentLabel.classList.remove('invalid', 'selected');
+            const radioCircle = parentLabel.querySelector('.radio-circle');
+            if (radioCircle) {
+                radioCircle.style.borderColor = '#dadce0';
+            }
+        }
     });
     
     // Reset highlight baris tabel
     document.querySelectorAll('.table-row').forEach(row => {
         row.style.backgroundColor = '';
     });
+    
+    // Reset styling semua input, select, textarea
+    document.querySelectorAll('input, select, textarea').forEach(field => {
+        field.style.borderColor = '';
+        field.style.boxShadow = '';
+        field.classList.remove('invalid', 'valid');
+    });
+    
+    // Hapus pesan error
+    hideErrorMessage();
     
     // Tampilkan halaman 1 lagi
     showPage(1);
@@ -422,4 +661,6 @@ function resetForm() {
     
     // Scroll ke atas
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    console.log('Form reset complete');
 }
