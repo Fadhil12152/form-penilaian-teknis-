@@ -1,24 +1,114 @@
 body {
-  font-family: Arial, sans-serif;
-  max-width: 800px;
-  margin: auto;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); /* Latar belakang tidak polos */
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #333;
 }
 
-fieldset {
-  margin-bottom: 20px;
-  padding: 15px;
+.main-wrapper {
+    padding: 40px 20px;
 }
 
-label {
-  display: block;
-  margin-top: 10px;
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
-.hidden {
-  display: none;
+header {
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 30px;
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
+.user-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 0.9em;
+    color: #666;
 }
+
+.selection-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.question-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.question-text {
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.scale-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    padding: 10px 0;
+}
+
+.radio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.label-text {
+    font-size: 0.8em;
+    color: #777;
+}
+
+.extremes {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 650px;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.btn-primary, .btn-submit {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-primary { background: #1a2a6c; color: white; }
+.btn-submit { background: #27ae60; color: white; width: 100%; font-size: 1.1em; }
+.hidden { display: none; }
