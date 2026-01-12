@@ -3,338 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Evaluasi Penilaian Pegawai</title>
+    <title>Sistem Penilaian Kompetensi Pegawai Sintelis</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-clipboard-check"></i> FORM EVALUASI PENILAIAN TERHADAP PEGAWAI</h1>
-            <p class="subtitle">Yth. Bapak/Ibu Pegawai</p>
-            <p>Kami ingin melayani anda lebih baik, untuk itu mohon kesediaan peserta untuk memberikan penilaian dan komentar terhadap penyelenggaraan pelatihan ini.</p>
-            <p>Terima kasih.</p>
-        </header>
-
-        <div class="required-note">
-            <span class="required-star">*</span> Wajib diisi
+    <div class="form-container">
+        <div class="form-header-bar"></div>
+        <div class="form-card header-card">
+            <h1>BUKU PENILAIAN PEGAWAI SINTELIS</h1>
+            <p>Formulir evaluasi kompetensi teknis terhadap peralatan dan prosedur kerja.</p>
+            <hr>
+            <p class="required-text">* Menunjukkan pertanyaan yang wajib diisi</p>
         </div>
 
-        <!-- Progress Steps -->
-        <div class="progress-steps">
-            <div class="step active" id="step1">1. Profil Pribadi</div>
-            <div class="step" id="step2">2. Profil Jabatan</div>
-            <div class="step" id="step3">3. Penilaian Teknis</div>
+        <div class="form-card">
+            <h3>PROFIL PEGAWAI</h3>
+            <div class="input-field">
+                <label>NAMA LENGKAP *</label>
+                <input type="text" id="emp_name" placeholder="Masukkan nama lengkap" required>
+            </div>
+            <div class="input-field">
+                <label>NIPP *</label>
+                <input type="text" id="emp_nipp" placeholder="Masukkan NIPP" required>
+            </div>
+            <div class="input-field">
+                <label>UNIT KEDUDUKAN / RESOR *</label>
+                <input type="text" id="emp_unit" placeholder="Contoh: UPT Resor Sintelis 2.6" required>
+            </div>
         </div>
 
-        <form id="penilaianForm">
-            <!-- Page 1: Profil Pribadi -->
-            <div class="form-page active" id="page1">
-                <h2><i class="fas fa-user"></i> PROFIL PRIBADI</h2>
-                
-                <div class="form-group">
-                    <label for="nama">NAMA LENGKAP <span class="required-star">*</span></label>
-                    <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
-                    <div class="error-message" id="errorNama"></div>
+        <div class="form-card">
+            <h3>PILIH KATEGORI PERALATAN *</h3>
+            <p class="sub-text">Centang peralatan yang ingin dinilai untuk memunculkan pertanyaan spesifik.</p>
+            <div id="filterGrid" class="filter-grid">
                 </div>
-                
-                <div class="form-group">
-                    <label for="nipp">NIPP <span class="required-star">*</span></label>
-                    <input type="text" id="nipp" name="nipp" placeholder="Masukkan NIPP" required>
-                    <div class="error-message" id="errorNipp"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Jenis Kelamin <span class="required-star">*</span></label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="gender" value="Pria" required>
-                            <span class="radio-button"></span>
-                            Pria
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="gender" value="Wanita">
-                            <span class="radio-button"></span>
-                            Wanita
-                        </label>
-                    </div>
-                    <div class="error-message" id="errorGender"></div>
-                </div>
-                
-                <div class="button-group">
-                    <button type="button" class="btn-clear" onclick="clearPage(1)">
-                        <i class="fas fa-eraser"></i> Clear form
-                    </button>
-                    <button type="button" class="btn-next" onclick="nextPage(1, 2)">
-                        Next <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
+        </div>
 
-            <!-- Page 2: Profil Jabatan -->
-            <div class="form-page" id="page2">
-                <h2><i class="fas fa-briefcase"></i> PROFIL JABATAN</h2>
-                
-                <div class="form-group">
-                    <label for="kedudukan">Kedudukan <span class="required-star">*</span></label>
-                    <select id="kedudukan" name="kedudukan" required>
-                        <option value="">Pilih Kedudukan</option>
-                        <option value="Kantor Pusat">Kantor Pusat</option>
-                        <option value="Daop 1 Jakarta">Daop 1 Jakarta</option>
-                        <option value="Daop 2 Bandung">Daop 2 Bandung</option>
-                        <option value="Daop 3 Cirebon">Daop 3 Cirebon</option>
-                        <option value="Daop 4 Semarang">Daop 4 Semarang</option>
-                        <option value="Daop 5 Purwokerto">Daop 5 Purwokerto</option>
-                        <option value="Daop 6 Yogyakarta">Daop 6 Yogyakarta</option>
-                        <option value="Daop 7 Madiun">Daop 7 Madiun</option>
-                        <option value="Daop 8 Surabaya">Daop 8 Surabaya</option>
-                        <option value="Daop 9 Jember">Daop 9 Jember</option>
-                    </select>
-                    <div class="error-message" id="errorKedudukan"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="jabatan">Jabatan <span class="required-star">*</span></label>
-                    <select id="jabatan" name="jabatan" required>
-                        <option value="">Pilih Jabatan</option>
-                        <option value="Pelaksana">Pelaksana</option>
-                        <option value="Calon Petugas Negative Check">Calon Petugas Negative Check</option>
-                        <option value="Petugas Negatif Cek">Petugas Negatif Cek</option>
-                        <option value="Supervisor Perawatan Perbaikan UPT Resor">Supervisor Perawatan Perbaikan UPT Resor</option>
-                        <option value="Supervisor Perawatan Preventif UPT Resor">Supervisor Perawatan Preventif UPT Resor</option>
-                        <option value="Supervisor Perbaikan Workshop">Supervisor Perbaikan Workshop</option>
-                        <option value="Supervisor Rekayasa Perawatan Workshop">Supervisor Rekayasa Perawatan Workshop</option>
-                        <option value="Kepala UPT Resor">Kepala UPT Resor</option>
-                        <option value="Kepala UPT Workshop">Kepala UPT Workshop</option>
-                        <option value="Assistant Manager">Assistant Manager</option>
-                        <option value="Specialist">Specialist</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                    <div class="error-message" id="errorJabatan"></div>
-                </div>
-
-                <h3>(I) ITCS-MS (Memahami SOP perawatan sesuai ITCS-MS) Pilih sesuai peralatan yang ada di daerah masing-masing</h3>
-                
-                <div class="assessment-container">
-                    <table class="assessment-table">
-                        <thead>
-                            <tr>
-                                <th width="60%"></th>
-                                <th>Sangat Kurang</th>
-                                <th>Kurang</th>
-                                <th>Cukup</th>
-                                <th>Baik</th>
-                                <th>Sangat Baik</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1. Perawatan PDSM</td>
-                                <td><input type="radio" name="itcs1" value="1"></td>
-                                <td><input type="radio" name="itcs1" value="2"></td>
-                                <td><input type="radio" name="itcs1" value="3"></td>
-                                <td><input type="radio" name="itcs1" value="4"></td>
-                                <td><input type="radio" name="itcs1" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>2. Perawatan Peraga Sinyal Mekanik</td>
-                                <td><input type="radio" name="itcs2" value="1"></td>
-                                <td><input type="radio" name="itcs2" value="2"></td>
-                                <td><input type="radio" name="itcs2" value="3"></td>
-                                <td><input type="radio" name="itcs2" value="4"></td>
-                                <td><input type="radio" name="itcs2" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>3. Perawatan Wesel Mekanik</td>
-                                <td><input type="radio" name="itcs3" value="1"></td>
-                                <td><input type="radio" name="itcs3" value="2"></td>
-                                <td><input type="radio" name="itcs3" value="3"></td>
-                                <td><input type="radio" name="itcs3" value="4"></td>
-                                <td><input type="radio" name="itcs3" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>4. Negative Check Persinyalan Mekanik</td>
-                                <td><input type="radio" name="itcs4" value="1"></td>
-                                <td><input type="radio" name="itcs4" value="2"></td>
-                                <td><input type="radio" name="itcs4" value="3"></td>
-                                <td><input type="radio" name="itcs4" value="4"></td>
-                                <td><input type="radio" name="itcs4" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>5. Perawatan Saluran Kawat</td>
-                                <td><input type="radio" name="itcs5" value="1"></td>
-                                <td><input type="radio" name="itcs5" value="2"></td>
-                                <td><input type="radio" name="itcs5" value="3"></td>
-                                <td><input type="radio" name="itcs5" value="4"></td>
-                                <td><input type="radio" name="itcs5" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>6. Perawatan Wesel Elektrik</td>
-                                <td><input type="radio" name="itcs6" value="1"></td>
-                                <td><input type="radio" name="itcs6" value="2"></td>
-                                <td><input type="radio" name="itcs6" value="3"></td>
-                                <td><input type="radio" name="itcs6" value="4"></td>
-                                <td><input type="radio" name="itcs6" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>7. Perawatan PDSE</td>
-                                <td><input type="radio" name="itcs7" value="1"></td>
-                                <td><input type="radio" name="itcs7" value="2"></td>
-                                <td><input type="radio" name="itcs7" value="3"></td>
-                                <td><input type="radio" name="itcs7" value="4"></td>
-                                <td><input type="radio" name="itcs7" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>8. Perawatan Peraga Sinyal Elektrik</td>
-                                <td><input type="radio" name="itcs8" value="1"></td>
-                                <td><input type="radio" name="itcs8" value="2"></td>
-                                <td><input type="radio" name="itcs8" value="3"></td>
-                                <td><input type="radio" name="itcs8" value="4"></td>
-                                <td><input type="radio" name="itcs8" value="5"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="button-group">
-                    <button type="button" class="btn-back" onclick="prevPage(2, 1)">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <button type="button" class="btn-clear" onclick="clearPage(2)">
-                        <i class="fas fa-eraser"></i> Clear form
-                    </button>
-                    <button type="button" class="btn-next" onclick="nextPage(2, 3)">
-                        Next <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Page 3: Lanjutan Penilaian -->
-            <div class="form-page" id="page3">
-                <h2><i class="fas fa-tasks"></i> LANJUTAN PENILAIAN TEKNIS</h2>
-                
-                <div class="assessment-container">
-                    <table class="assessment-table">
-                        <thead>
-                            <tr>
-                                <th width="60%"></th>
-                                <th>Sangat Kurang</th>
-                                <th>Kurang</th>
-                                <th>Cukup</th>
-                                <th>Baik</th>
-                                <th>Sangat Baik</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>25. Perawatan Trafo Kering</td>
-                                <td><input type="radio" name="itcs25" value="1"></td>
-                                <td><input type="radio" name="itcs25" value="2"></td>
-                                <td><input type="radio" name="itcs25" value="3"></td>
-                                <td><input type="radio" name="itcs25" value="4"></td>
-                                <td><input type="radio" name="itcs25" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>26. Perawatan Trafo Location Case dan Trafo Tiang</td>
-                                <td><input type="radio" name="itcs26" value="1"></td>
-                                <td><input type="radio" name="itcs26" value="2"></td>
-                                <td><input type="radio" name="itcs26" value="3"></td>
-                                <td><input type="radio" name="itcs26" value="4"></td>
-                                <td><input type="radio" name="itcs26" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>27. Perawatan Lightning Arrester</td>
-                                <td><input type="radio" name="itcs27" value="1"></td>
-                                <td><input type="radio" name="itcs27" value="2"></td>
-                                <td><input type="radio" name="itcs27" value="3"></td>
-                                <td><input type="radio" name="itcs27" value="4"></td>
-                                <td><input type="radio" name="itcs27" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>28. Pemeriksaan Kabel Outgoing</td>
-                                <td><input type="radio" name="itcs28" value="1"></td>
-                                <td><input type="radio" name="itcs28" value="2"></td>
-                                <td><input type="radio" name="itcs28" value="3"></td>
-                                <td><input type="radio" name="itcs28" value="4"></td>
-                                <td><input type="radio" name="itcs28" value="5"></td>
-                            </tr>
-                            <tr>
-                                <td>29. Pengetesan Relay Proteksi DC Switch Gear</td>
-                                <td><input type="radio" name="itcs29" value="1"></td>
-                                <td><input type="radio" name="itcs29" value="2"></td>
-                                <td><input type="radio" name="itcs29" value="3"></td>
-                                <td><input type="radio" name="itcs29" value="4"></td>
-                                <td><input type="radio" name="itcs29" value="5"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="form-group">
-                    <label for="komentar">Komentar dan Saran Tambahan</label>
-                    <textarea id="komentar" name="komentar" rows="4" placeholder="Masukkan komentar atau saran Anda..."></textarea>
-                </div>
-                
-                <div class="button-group">
-                    <button type="button" class="btn-back" onclick="prevPage(3, 2)">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <button type="button" class="btn-clear" onclick="clearPage(3)">
-                        <i class="fas fa-eraser"></i> Clear form
-                    </button>
-                    <button type="button" class="btn-submit" onclick="submitForm()">
-                        <i class="fas fa-paper-plane"></i> Submit
-                    </button>
-                </div>
+        <form id="mainAssessmentForm">
+            <div id="dynamicQuestionsArea"></div>
+            
+            <div class="form-footer">
+                <button type="submit" class="btn-primary">Kirim Penilaian</button>
+                <button type="button" class="btn-secondary" onclick="window.location.reload()">Reset Formulir</button>
             </div>
         </form>
-
-        <!-- Results Section -->
-        <div id="results" class="hidden">
-            <div class="results-container">
-                <h2><i class="fas fa-check-circle"></i> TERIMA KASIH!</h2>
-                <p>Penilaian Anda telah berhasil dikirim.</p>
-                <p>Tanggapan Anda sangat berarti bagi kami untuk meningkatkan kualitas pelatihan.</p>
-                
-                <div class="results-summary">
-                    <h3>Ringkasan Penilaian:</h3>
-                    <div class="summary-item">
-                        <span>Nama:</span>
-                        <span id="summaryNama">-</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>NIPP:</span>
-                        <span id="summaryNipp">-</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Jabatan:</span>
-                        <span id="summaryJabatan">-</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Kedudukan:</span>
-                        <span id="summaryKedudukan">-</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Total Item Dinilai:</span>
-                        <span id="summaryTotal">0</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Rata-rata Nilai:</span>
-                        <span id="summaryAverage">0</span>
-                    </div>
-                </div>
-                
-                <button type="button" class="btn-new" onclick="newForm()">
-                    <i class="fas fa-plus"></i> Form Baru
-                </button>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; 2023 Sistem Penilaian Pegawai</p>
-        </footer>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
