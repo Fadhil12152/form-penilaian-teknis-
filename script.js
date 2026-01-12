@@ -1,98 +1,120 @@
-const fullEquipmentData = {
-    "itcs_ms": {
-        title: "I. ITCS-MS (Persinyalan Mekanik)",
-        items: ["SOP ITCS-MS", "PDSM", "Peraga Sinyal Mekanik", "Wesel Mekanik", "Negative Check", "Saluran Kawat", "Peralatan Catu Daya"]
+// Data ITCS-MS (Wajib di Awal) 
+const mandatoryITCSItems = [
+    "Perawatan PDSM", "Perawatan Peraga Sinyal Mekanik", "Perawatan Wesel Mekanik",
+    "Negative Check Persinyalan Mekanik", "Perawatan Saluran Kawat", "Perawatan Wesel Elektrik",
+    "Perawatan PDSE", "Perawatan Peraga Sinyal Elektrik", "Perawatan Axle Counter",
+    "Perawatan Track Circuit", "Perawatan Location Case", "Perawatan Pointlock/Perintang/Pelalau",
+    "Perawatan WLSE", "Perawatan Kontak Deteksi"
+];
+
+// Data Peralatan Tambahan (Filter) 
+const additionalData = {
+    "westrace": {
+        title: "PDSE - Westrace MK I",
+        items: ["HVLM", "VPIM", "VROM", "SOF", "NCDC", "LCP", "Pin Terminal di ER"]
     },
-    "pdse_westrace": {
-        title: "II-A. PDSE (Westrace MK I)",
-        items: ["Modul HVLM", "Modul Vpim", "Modul Vrom", "Modul SOF", "Modul NCDC", "Modul LCP", "Pin Terminal ER"]
-    },
-    "pdse_mis801": {
-        title: "II-B. PDSE (MIS 801)",
-        items: ["Modul ZRE/ZRI", "Modul RE/RI", "Modul SWH/SWR", "Modul WF/WAD/DW", "Modul GA/FRM/FRB", "Data Logger", "LCP"]
-    },
-    "pdse_sil02": {
-        title: "II-C. PDSE (SIL-02 / Next G)",
-        items: ["PLC & Remote I/O", "I/O Logic", "Modul X-CPU / X-COM", "Himatrix F1/F2/F3", "Data Logger SIL", "LCP / VDU"]
+    "mis801": {
+        title: "PDSE - MIS 801",
+        items: ["ZRE", "ZRI", "RE", "RI", "R", "SWH", "SWHW", "Data Logger"]
     },
     "motor_wesel": {
-        title: "III. Motor Wesel",
-        items: ["Komponen Dalam (BSG-9/S-90/NSE/T84M)", "Fungsi Komponen Mekanik", "Wiring Wesel Elektrik", "Terminal Pin & Pengukuran"]
-    },
-    "pendeteksi_ka": {
-        title: "V. Pendeteksi KA",
-        items: ["Head Sensor (Altpro/Siemens)", "Wheel Sensor (Frauscher/Thales)", "Track Circuit", "Modul VUR/MPU/Zanap", "EAK / GAK"]
-    },
-    "laa_gardu": {
-        title: "VII. Listrik Aliran Atas & Gardu",
-        items: ["Jaringan LAA (Cantilever/Kawat)", "Feeding System LAA", "Peralatan VCB / LBS 20KV", "Transformator & Penyearah", "HSCB & Sistem Negatif"]
+        title: "Motor Wesel",
+        items: ["Komponen Dalam BSG-9", "Komponen Dalam S-90", "Wiring Wesel", "Terminal Pin"]
     },
     "telekomunikasi": {
-        title: "IX. Telekomunikasi",
-        items: ["Central Radio (IDU/ODU)", "Base Station & Mux", "Radio Lokomotif (LTU/Console)", "Waystation & Peralatan PK", "Sistem Serat Optik"]
-    },
-    "administrasi": {
-        title: "XI. Administrasi & SAP",
-        items: ["Pembuatan RAB & Nota Dinas", "SAP MM & SAP-LAM", "Pembuatan WO & Men-TECO WO", "Pelaporan SRI"]
-    },
-    "alat_kerja": {
-        title: "XII. Penggunaan Alat Kerja",
-        items: ["AVO Meter & Insulation Tester", "OTDR & Splicer", "Grounding & Batere Tester", "Takel, Kotrek & Alat LAA"]
+        title: "Telekomunikasi",
+        items: ["Radio Lokomotif", "Peralatan di Stasiun", "Peralatan di Luar Stasiun", "Serat Optik"]
     }
 };
 
-const filterGrid = document.getElementById('filterGrid');
-const questionsArea = document.getElementById('dynamicQuestionsArea');
+const itcsContainer = document.getElementById('mandatoryITCS');
+const filterArea = document.getElementById('filterArea');
+const dynamicQuestions = document.getElementById('dynamicQuestionsWrapper');
 
-// 1. Render Checkbox Filter
-Object.keys(fullEquipmentData).forEach(key => {
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
-        <input type="checkbox" id="filter_${key}" value="${key}">
-        <label for="filter_${key}">${fullEquipmentData[key].title}</label>
-    `;
-    filterGrid.appendChild(wrapper);
-    document.getElementById(`filter_${key}`).addEventListener('change', generateQuestions);
+// 1. Render ITCS-MS (Wajib di Awal)
+function initMandatory() {
+    const card = document.createElement('div');
+    card.className = 'form-card';
+    card.innerHTML = `<div class="category-title">(I) ITCS-MS (Memahami SOP perawatan sesuai ITCS-MS) *</div>`;
+    
+    mandatoryITCSItems.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.style.marginBottom = "25px";
+        div.innerHTML = `
+            <label style="font-size: 0.95em;">${index + 1}. ${item} *</label>
+            <div class="scale-container">
+                <span class="extreme-label">Sangat Kurang</span>
+                ${generateScale('itcs', index)}
+                <span class="extreme-label">Sangat Baik</span>
+            </div>
+        `;
+        card.appendChild(div);
+    });
+    itcsContainer.appendChild(card);
+}
+
+// 2. Render Checkbox Filter
+function initFilter() {
+    for (let key in additionalData) {
+        const div = document.createElement('div');
+        div.innerHTML = `<label><input type="checkbox" class="cat-filter" value="${key}"> ${additionalData[key].title}</label>`;
+        filterArea.appendChild(div);
+    }
+}
+
+function generateScale(cat, idx) {
+    let radios = '';
+    for (let i = 1; i <= 10; i++) {
+        radios += `
+            <div class="scale-option">
+                <span class="scale-num">${i}</span>
+                <input type="radio" name="${cat}_${idx}" value="${i}" required>
+            </div>`;
+    }
+    return radios;
+}
+
+// 3. Render Pertanyaan Dinamis
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('cat-filter')) {
+        renderDynamic();
+    }
 });
 
-// 2. Fungsi Generate Pertanyaan Berdasarkan Pilihan
-function generateQuestions() {
-    questionsArea.innerHTML = '';
-    const selectedKeys = Array.from(document.querySelectorAll('#filterGrid input:checked')).map(i => i.value);
+function renderDynamic() {
+    dynamicQuestions.innerHTML = '';
+    const selected = document.querySelectorAll('.cat-filter:checked');
 
-    selectedKeys.forEach(key => {
-        const data = fullEquipmentData[key];
-        const section = document.createElement('div');
-        section.className = 'form-card';
-        
-        let html = `<div class="category-title">${data.title}</div>`;
-        
-        data.items.forEach(item => {
-            let scaleHtml = `<div class="scale-row"><span class="extreme-label">Sangat Kurang</span>`;
-            for(let i=1; i<=10; i++) {
-                scaleHtml += `
-                    <div class="scale-option">
-                        <span class="scale-num">${i}</span>
-                        <input type="radio" name="${key}_${item.replace(/\s/g,'')}" value="${i}" required>
-                    </div>`;
-            }
-            scaleHtml += `<span class="extreme-label">Sangat Baik</span></div>`;
+    selected.forEach(cb => {
+        const data = additionalData[cb.value];
+        const card = document.createElement('div');
+        card.className = 'form-card';
+        card.innerHTML = `<div class="category-title">${data.title}</div>`;
 
-            html += `
-                <div style="margin-bottom: 30px;">
-                    <label style="font-weight:500;">Sejauh mana anda memahami fungsi dan prinsip kerja <b>${item}</b>? *</label>
-                    ${scaleHtml}
-                </div>`;
+        data.items.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.style.marginBottom = "25px";
+            div.innerHTML = `
+                <label style="font-size: 0.95em;">Sejauh mana anda memahami ${item}? *</label>
+                <div class="scale-container">
+                    <span class="extreme-label">Sangat Kurang</span>
+                    ${generateScale(cb.value, index)}
+                    <span class="extreme-label">Sangat Baik</span>
+                </div>
+            `;
+            card.appendChild(div);
         });
-        
-        section.innerHTML = html;
-        questionsArea.appendChild(section);
+        dynamicQuestions.appendChild(card);
     });
 }
 
-// 3. Handle Submit
-document.getElementById('mainAssessmentForm').onsubmit = (e) => {
+// 4. Handle Submit & Halaman Sukses
+document.getElementById('assessmentForm').onsubmit = function(e) {
     e.preventDefault();
-    const name = document.getElementById('emp_name').value;
-    alert(`Terima kasih! Penilaian untuk ${name} telah berhasil direkam.`);
+    document.getElementById('mainFormContainer').classList.add('hidden');
+    document.getElementById('successPage').classList.remove('hidden');
+    window.scrollTo(0, 0);
 };
+
+initMandatory();
+initFilter();
