@@ -1,281 +1,98 @@
-// Variabel global untuk menyimpan data
-let formData = {
-    nama: '',
-    nipp: '',
-    gender: '',
-    kedudukan: '',
-    jabatan: '',
-    penilaian: {},
-    komentar: ''
+const fullEquipmentData = {
+    "itcs_ms": {
+        title: "I. ITCS-MS (Persinyalan Mekanik)",
+        items: ["SOP ITCS-MS", "PDSM", "Peraga Sinyal Mekanik", "Wesel Mekanik", "Negative Check", "Saluran Kawat", "Peralatan Catu Daya"]
+    },
+    "pdse_westrace": {
+        title: "II-A. PDSE (Westrace MK I)",
+        items: ["Modul HVLM", "Modul Vpim", "Modul Vrom", "Modul SOF", "Modul NCDC", "Modul LCP", "Pin Terminal ER"]
+    },
+    "pdse_mis801": {
+        title: "II-B. PDSE (MIS 801)",
+        items: ["Modul ZRE/ZRI", "Modul RE/RI", "Modul SWH/SWR", "Modul WF/WAD/DW", "Modul GA/FRM/FRB", "Data Logger", "LCP"]
+    },
+    "pdse_sil02": {
+        title: "II-C. PDSE (SIL-02 / Next G)",
+        items: ["PLC & Remote I/O", "I/O Logic", "Modul X-CPU / X-COM", "Himatrix F1/F2/F3", "Data Logger SIL", "LCP / VDU"]
+    },
+    "motor_wesel": {
+        title: "III. Motor Wesel",
+        items: ["Komponen Dalam (BSG-9/S-90/NSE/T84M)", "Fungsi Komponen Mekanik", "Wiring Wesel Elektrik", "Terminal Pin & Pengukuran"]
+    },
+    "pendeteksi_ka": {
+        title: "V. Pendeteksi KA",
+        items: ["Head Sensor (Altpro/Siemens)", "Wheel Sensor (Frauscher/Thales)", "Track Circuit", "Modul VUR/MPU/Zanap", "EAK / GAK"]
+    },
+    "laa_gardu": {
+        title: "VII. Listrik Aliran Atas & Gardu",
+        items: ["Jaringan LAA (Cantilever/Kawat)", "Feeding System LAA", "Peralatan VCB / LBS 20KV", "Transformator & Penyearah", "HSCB & Sistem Negatif"]
+    },
+    "telekomunikasi": {
+        title: "IX. Telekomunikasi",
+        items: ["Central Radio (IDU/ODU)", "Base Station & Mux", "Radio Lokomotif (LTU/Console)", "Waystation & Peralatan PK", "Sistem Serat Optik"]
+    },
+    "administrasi": {
+        title: "XI. Administrasi & SAP",
+        items: ["Pembuatan RAB & Nota Dinas", "SAP MM & SAP-LAM", "Pembuatan WO & Men-TECO WO", "Pelaporan SRI"]
+    },
+    "alat_kerja": {
+        title: "XII. Penggunaan Alat Kerja",
+        items: ["AVO Meter & Insulation Tester", "OTDR & Splicer", "Grounding & Batere Tester", "Takel, Kotrek & Alat LAA"]
+    }
 };
 
-// Inisialisasi saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-    // Set nilai default untuk testing (opsional, bisa dihapus)
-    // document.getElementById('nama').value = 'WIHARJO';
-    // document.getElementById('nipp').value = '55165';
+const filterGrid = document.getElementById('filterGrid');
+const questionsArea = document.getElementById('dynamicQuestionsArea');
+
+// 1. Render Checkbox Filter
+Object.keys(fullEquipmentData).forEach(key => {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = `
+        <input type="checkbox" id="filter_${key}" value="${key}">
+        <label for="filter_${key}">${fullEquipmentData[key].title}</label>
+    `;
+    filterGrid.appendChild(wrapper);
+    document.getElementById(`filter_${key}`).addEventListener('change', generateQuestions);
 });
 
-// Fungsi untuk navigasi ke halaman berikutnya
-function nextPage(currentPage, nextPage) {
-    if (validatePage(currentPage)) {
-        showPage(nextPage);
-        updateProgress(currentPage, nextPage);
-    }
-}
+// 2. Fungsi Generate Pertanyaan Berdasarkan Pilihan
+function generateQuestions() {
+    questionsArea.innerHTML = '';
+    const selectedKeys = Array.from(document.querySelectorAll('#filterGrid input:checked')).map(i => i.value);
 
-// Fungsi untuk kembali ke halaman sebelumnya
-function prevPage(currentPage, prevPage) {
-    showPage(prevPage);
-    updateProgress(currentPage, prevPage);
-}
-
-// Fungsi untuk menampilkan halaman tertentu
-function showPage(pageNumber) {
-    // Sembunyikan semua halaman
-    document.querySelectorAll('.form-page').forEach(page => {
-        page.classList.remove('active');
-    });
-    
-    // Tampilkan halaman yang diminta
-    document.getElementById('page' + pageNumber).classList.add('active');
-    
-    // Scroll ke atas
-    window.scrollTo(0, 0);
-}
-
-// Fungsi untuk update progress bar
-function updateProgress(fromPage, toPage) {
-    document.getElementById('step' + fromPage).classList.remove('active');
-    document.getElementById('step' + toPage).classList.add('active');
-}
-
-// Fungsi untuk validasi halaman
-function validatePage(pageNumber) {
-    let isValid = true;
-    
-    if (pageNumber === 1) {
-        // Validasi halaman 1
-        const nama = document.getElementById('nama').value.trim();
-        const nipp = document.getElementById('nipp').value.trim();
-        const gender = document.querySelector('input[name="gender"]:checked');
+    selectedKeys.forEach(key => {
+        const data = fullEquipmentData[key];
+        const section = document.createElement('div');
+        section.className = 'form-card';
         
-        // Validasi nama
-        if (nama === '') {
-            document.getElementById('errorNama').textContent = 'Nama wajib diisi';
-            isValid = false;
-        } else {
-            document.getElementById('errorNama').textContent = '';
-        }
+        let html = `<div class="category-title">${data.title}</div>`;
         
-        // Validasi NIPP
-        if (nipp === '') {
-            document.getElementById('errorNipp').textContent = 'NIPP wajib diisi';
-            isValid = false;
-        } else {
-            document.getElementById('errorNipp').textContent = '';
-        }
-        
-        // Validasi gender
-        if (!gender) {
-            document.getElementById('errorGender').textContent = 'Jenis kelamin wajib dipilih';
-            isValid = false;
-        } else {
-            document.getElementById('errorGender').textContent = '';
-        }
-        
-        // Simpan data
-        if (isValid) {
-            formData.nama = nama;
-            formData.nipp = nipp;
-            formData.gender = gender.value;
-        }
-        
-    } else if (pageNumber === 2) {
-        // Validasi halaman 2
-        const kedudukan = document.getElementById('kedudukan').value;
-        const jabatan = document.getElementById('jabatan').value;
-        
-        // Validasi kedudukan
-        if (kedudukan === '') {
-            document.getElementById('errorKedudukan').textContent = 'Kedudukan wajib dipilih';
-            isValid = false;
-        } else {
-            document.getElementById('errorKedudukan').textContent = '';
-        }
-        
-        // Validasi jabatan
-        if (jabatan === '') {
-            document.getElementById('errorJabatan').textContent = 'Jabatan wajib dipilih';
-            isValid = false;
-        } else {
-            document.getElementById('errorJabatan').textContent = '';
-        }
-        
-        // Simpan data
-        if (isValid) {
-            formData.kedudukan = kedudukan;
-            formData.jabatan = jabatan;
-            
-            // Simpan penilaian dari halaman 2
-            for (let i = 1; i <= 8; i++) {
-                const radio = document.querySelector(`input[name="itcs${i}"]:checked`);
-                if (radio) {
-                    formData.penilaian[`itcs${i}`] = parseInt(radio.value);
-                }
+        data.items.forEach(item => {
+            let scaleHtml = `<div class="scale-row"><span class="extreme-label">Sangat Kurang</span>`;
+            for(let i=1; i<=10; i++) {
+                scaleHtml += `
+                    <div class="scale-option">
+                        <span class="scale-num">${i}</span>
+                        <input type="radio" name="${key}_${item.replace(/\s/g,'')}" value="${i}" required>
+                    </div>`;
             }
-        }
-    }
-    
-    return isValid;
-}
+            scaleHtml += `<span class="extreme-label">Sangat Baik</span></div>`;
 
-// Fungsi untuk membersihkan halaman
-function clearPage(pageNumber) {
-    if (pageNumber === 1) {
-        // Clear halaman 1
-        document.getElementById('nama').value = '';
-        document.getElementById('nipp').value = '';
-        document.querySelectorAll('input[name="gender"]').forEach(radio => {
-            radio.checked = false;
+            html += `
+                <div style="margin-bottom: 30px;">
+                    <label style="font-weight:500;">Sejauh mana anda memahami fungsi dan prinsip kerja <b>${item}</b>? *</label>
+                    ${scaleHtml}
+                </div>`;
         });
-        document.getElementById('errorNama').textContent = '';
-        document.getElementById('errorNipp').textContent = '';
-        document.getElementById('errorGender').textContent = '';
-    } else if (pageNumber === 2) {
-        // Clear halaman 2
-        document.getElementById('kedudukan').value = '';
-        document.getElementById('jabatan').value = '';
-        for (let i = 1; i <= 8; i++) {
-            document.querySelectorAll(`input[name="itcs${i}"]`).forEach(radio => {
-                radio.checked = false;
-            });
-        }
-        document.getElementById('errorKedudukan').textContent = '';
-        document.getElementById('errorJabatan').textContent = '';
-    } else if (pageNumber === 3) {
-        // Clear halaman 3
-        for (let i = 25; i <= 29; i++) {
-            document.querySelectorAll(`input[name="itcs${i}"]`).forEach(radio => {
-                radio.checked = false;
-            });
-        }
-        document.getElementById('komentar').value = '';
-    }
-    
-    alert('Form pada halaman ini telah dibersihkan.');
-}
-
-// Fungsi untuk submit form
-function submitForm() {
-    // Kumpulkan data dari halaman 3
-    for (let i = 25; i <= 29; i++) {
-        const radio = document.querySelector(`input[name="itcs${i}"]:checked`);
-        if (radio) {
-            formData.penilaian[`itcs${i}`] = parseInt(radio.value);
-        }
-    }
-    
-    // Simpan komentar
-    formData.komentar = document.getElementById('komentar').value;
-    
-    // Hitung hasil
-    calculateResults();
-    
-    // Tampilkan hasil
-    showResults();
-}
-
-// Fungsi untuk menghitung hasil
-function calculateResults() {
-    const nilaiArray = Object.values(formData.penilaian);
-    const total = nilaiArray.reduce((sum, nilai) => sum + nilai, 0);
-    const rataRata = nilaiArray.length > 0 ? (total / nilaiArray.length).toFixed(2) : 0;
-    
-    // Update ringkasan
-    document.getElementById('summaryNama').textContent = formData.nama;
-    document.getElementById('summaryNipp').textContent = formData.nipp;
-    document.getElementById('summaryJabatan').textContent = formData.jabatan;
-    document.getElementById('summaryKedudukan').textContent = formData.kedudukan;
-    document.getElementById('summaryTotal').textContent = nilaiArray.length;
-    document.getElementById('summaryAverage').textContent = rataRata;
-    
-    // Simpan ke localStorage
-    saveToLocalStorage();
-}
-
-// Fungsi untuk menyimpan data ke localStorage
-function saveToLocalStorage() {
-    // Ambil data yang sudah ada
-    let semuaData = JSON.parse(localStorage.getItem('penilaianPegawai')) || [];
-    
-    // Tambahkan data baru
-    const dataBaru = {
-        ...formData,
-        tanggal: new Date().toLocaleString(),
-        id: Date.now()
-    };
-    
-    semuaData.push(dataBaru);
-    
-    // Simpan kembali
-    localStorage.setItem('penilaianPegawai', JSON.stringify(semuaData));
-    
-    console.log('Data tersimpan:', dataBaru);
-}
-
-// Fungsi untuk menampilkan hasil
-function showResults() {
-    // Sembunyikan form
-    document.getElementById('penilaianForm').style.display = 'none';
-    
-    // Sembunyikan progress steps
-    document.querySelector('.progress-steps').style.display = 'none';
-    
-    // Tampilkan hasil
-    document.getElementById('results').classList.remove('hidden');
-}
-
-// Fungsi untuk membuat form baru
-function newForm() {
-    // Reset form data
-    formData = {
-        nama: '',
-        nipp: '',
-        gender: '',
-        kedudukan: '',
-        jabatan: '',
-        penilaian: {},
-        komentar: ''
-    };
-    
-    // Reset semua input
-    document.getElementById('penilaianForm').reset();
-    
-    // Reset error messages
-    document.querySelectorAll('.error-message').forEach(el => {
-        el.textContent = '';
+        
+        section.innerHTML = html;
+        questionsArea.appendChild(section);
     });
-    
-    // Reset progress steps
-    document.querySelectorAll('.step').forEach((step, index) => {
-        if (index === 0) {
-            step.classList.add('active');
-        } else {
-            step.classList.remove('active');
-        }
-    });
-    
-    // Tampilkan form dan progress steps
-    document.getElementById('penilaianForm').style.display = 'block';
-    document.querySelector('.progress-steps').style.display = 'flex';
-    
-    // Sembunyikan hasil
-    document.getElementById('results').classList.add('hidden');
-    
-    // Tampilkan halaman 1
-    showPage(1);
-    
-    // Scroll ke atas
-    window.scrollTo(0, 0);
 }
+
+// 3. Handle Submit
+document.getElementById('mainAssessmentForm').onsubmit = (e) => {
+    e.preventDefault();
+    const name = document.getElementById('emp_name').value;
+    alert(`Terima kasih! Penilaian untuk ${name} telah berhasil direkam.`);
+};
