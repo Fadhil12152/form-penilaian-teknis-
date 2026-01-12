@@ -7,103 +7,89 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="mainFormContainer" class="form-container">
-        <div class="form-header-bar"></div>
-        
-        <div class="form-card header-card">
-            <h1>BUKU PENILAIAN PEGAWAI SINTELIS</h1>
-            <p>Formulir evaluasi kompetensi teknis terhadap peralatan dan prosedur kerja.</p>
-            <hr>
-            <p class="required-text">* Menunjukkan pertanyaan yang wajib diisi</p>
-        </div>
-
-        <div class="form-card">
-            <h3>PROFIL PRIBADI</h3>
-            <div class="input-field">
-                <label>NAMA LENGKAP *</label>
-                <input type="text" id="name" placeholder="Masukkan nama lengkap" required>
-            </div>
-            <div class="input-field">
-                <label>NIPP *</label>
-                <input type="text" id="nipp" placeholder="Masukkan NIPP" required>
-            </div>
+    <div id="mainFormPage">
+        <div class="form-container">
+            <div class="form-header-bar"></div>
             
-            <div class="input-field">
-                <label>Jenis Kelamin *</label>
-                <select id="gender" required>
-                    <option value="">Pilih</option>
-                    <option value="Pria">Pria</option>
-                    <option value="Wanita">Wanita</option>
-                </select>
+            <div class="form-card header-card">
+                <h1>BUKU PENILAIAN PEGAWAI SINTELIS</h1>
+                <p>Formulir evaluasi kompetensi teknis terhadap peralatan dan prosedur kerja.</p>
+                <hr>
+                <p class="required-text">* Menunjukkan pertanyaan yang wajib diisi</p>
             </div>
 
-            <div class="input-field">
-                <label>Kedudukan (Daop/Divre) *</label>
-                <select id="daop" required>
-                    <option value="">Pilih Daop/Divre</option>
-                    <option value="Kantor Pusat">Kantor Pusat</option>
-                    <option value="Daop 1 Jakarta">Daop 1 Jakarta</option>
-                    <option value="Daop 2 Bandung">Daop 2 Bandung</option>
-                    <option value="Daop 3 Cirebon">Daop 3 Cirebon</option>
-                    <option value="Daop 4 Semarang">Daop 4 Semarang</option>
-                    <option value="Daop 5 Purwokerto">Daop 5 Purwokerto</option>
-                    <option value="Daop 6 Yogyakarta">Daop 6 Yogyakarta</option>
-                    <option value="Daop 7 Madiun">Daop 7 Madiun</option>
-                    <option value="Daop 8 Surabaya">Daop 8 Surabaya</option>
-                    <option value="Daop 9 Jember">Daop 9 Jember</option>
-                    <option value="Divre I Sumatera Utara">Divre I Sumatera Utara</option>
-                    <option value="Divre II Sumatera Barat">Divre II Sumatera Barat</option>
-                    <option value="Divre III Palembang">Divre III Palembang</option>
-                    <option value="Divre IV Tanjungkarang">Divre IV Tanjungkarang</option>
-                    <option value="LRT Jabodebek">LRT Jabodebek</option>
-                </select>
+            <div class="form-card">
+                <h3>PROFIL PRIBADI</h3>
+                <div class="input-field">
+                    <label>NAMA LENGKAP *</label>
+                    <input type="text" id="name" placeholder="Nama Anda" required>
+                </div>
+                <div class="input-field">
+                    <label>NIPP *</label>
+                    <input type="text" id="nipp" placeholder="NIPP Anda" required>
+                </div>
+                <div class="input-field">
+                    <label>Jenis Kelamin *</label>
+                    <select id="gender" required>
+                        <option value="">Pilih</option>
+                        <option value="Pria">Pria</option>
+                        <option value="Wanita">Wanita</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label>Kedudukan (Daop/Divre) *</label>
+                    <select id="daop" required>
+                        <option value="">Pilih Daop/Divre</option>
+                        <option value="Kantor Pusat">Kantor Pusat</option>
+                        <option value="Daop 1 Jakarta">Daop 1 Jakarta</option>
+                        <option value="Daop 2 Bandung">Daop 2 Bandung</option>
+                        <option value="Daop 3 Cirebon">Daop 3 Cirebon</option>
+                        <option value="Divre I Sumatera Utara">Divre I Sumatera Utara</option>
+                        <option value="LRT Jabodebek">LRT Jabodebek</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label>Jabatan *</label>
+                    <select id="position" required>
+                        <option value="">Pilih Jabatan</option>
+                        <option value="Pelaksana">Pelaksana</option>
+                        <option value="Petugas Negatif Cek">Petugas Negatif Cek</option>
+                        <option value="Kepala UPT Resor">Kepala UPT Resor</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="input-field">
-                <label>Jabatan *</label>
-                <select id="position" required>
-                    <option value="">Pilih Jabatan</option>
-                    <option value="Pelaksana">Pelaksana</option>
-                    <option value="Calon Petugas Negative Check">Calon Petugas Negative Check</option>
-                    <option value="Petugas Negatif Cek">Petugas Negatif Cek</option>
-                    <option value="Supervisor Perawatan Perbaikan UPT Resor">Supervisor Perawatan Perbaikan UPT Resor</option>
-                    <option value="Supervisor Perawatan Preventif UPT Resor">Supervisor Perawatan Preventif UPT Resor</option>
-                    <option value="Supervisor Perbaikan Workshop">Supervisor Perbaikan Workshop</option>
-                    <option value="Supervisor Rekayasa Perawatan Workshop">Supervisor Rekayasa Perawatan Workshop</option>
-                    <option value="Kepala UPT Resor">Kepala UPT Resor</option>
-                    <option value="Kepala UPT Workshop">Kepala UPT Workshop</option>
-                    <option value="Assistant Manager">Assistant Manager</option>
-                    <option value="Specialist">Specialist</option>
-                    <option value="Lainnya">Lainnya</option>
-                </select>
+            <div class="form-card">
+                <h3 class="category-title">(I) ITCS-MS (SOP Perawatan) *</h3>
+                <p style="font-size: 0.85em; margin-bottom: 20px;">Pilih sesuai peralatan yang ada di daerah masing-masing.</p>
+                <div id="mandatoryITCSArea"></div>
             </div>
+
+            <div class="form-card">
+                <h3>PILIH KATEGORI PERALATAN TAMBAHAN</h3>
+                <div id="filterGrid" class="filter-grid">
+                    </div>
+            </div>
+
+            <form id="assessmentForm">
+                <div id="dynamicQuestionsWrapper"></div>
+                
+                <div class="form-footer">
+                    <button type="submit" class="btn-primary">Kirim Penilaian</button>
+                    <button type="button" class="btn-secondary" onclick="location.reload()">Clear form</button>
+                </div>
+            </form>
         </div>
-
-        <div id="mandatoryITCS">
-            </div>
-
-        <div class="form-card">
-            <h3>PILIH KATEGORI PERALATAN TAMBAHAN</h3>
-            <p style="font-size: 0.85em; color: #666;">Centang peralatan tambahan lainnya untuk memunculkan penilaian spesifik.</p>
-            <div id="filterArea" class="filter-grid"></div>
-        </div>
-
-        <form id="assessmentForm">
-            <div id="dynamicQuestionsWrapper"></div>
-            
-            <div class="form-footer">
-                <button type="submit" class="btn-primary">Kirim Penilaian</button>
-                <button type="button" class="btn-secondary" onclick="location.reload()">Clear form</button>
-            </div>
-        </form>
     </div>
 
-    <div id="successPage" class="form-container hidden" style="text-align: center;">
-        <div class="form-header-bar"></div>
-        <div class="form-card">
-            <h1 style="color: #673ab7;">Terima Kasih!</h1>
-            <p>Tanggapan Anda telah direkam.</p>
-            <a href="#" onclick="location.reload()" style="color: #673ab7; text-decoration: none; font-size: 0.9em;">Kirim tanggapan lain</a>
+    <div id="successPage" class="hidden">
+        <div class="form-container">
+            <div class="form-header-bar"></div>
+            <div class="form-card success-content">
+                <h1>Terima Kasih!</h1>
+                <p>Tanggapan Anda telah direkam.</p>
+                <button onclick="location.reload()" class="btn-link">Kirim tanggapan lain</button>
+            </div>
         </div>
     </div>
 
