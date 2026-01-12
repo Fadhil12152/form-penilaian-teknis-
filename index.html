@@ -4,219 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buku Penilaian Pegawai Sintelis</title>
-    <style>
-        :root {
-            --google-purple: #673ab7;
-            --bg-color: #f0ebf8;
-            --text-dark: #202124;
-            --border-gray: #dadce0;
-        }
-
-        body {
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-            background-attachment: fixed;
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-            margin: 0; padding: 20px 10px; color: var(--text-dark);
-        }
-
-        .form-container { max-width: 800px; margin: 0 auto; }
-
-        .form-header-bar { height: 10px; background-color: var(--google-purple); border-radius: 8px 8px 0 0; }
-
-        .form-card {
-            background: white; border: 1px solid var(--border-gray);
-            border-radius: 8px; padding: 24px; margin-bottom: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header-card h1 { font-size: 28px; margin: 0; font-weight: bold; text-transform: uppercase; }
-        
-        .input-field { margin-bottom: 20px; }
-        .input-field label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 14px; }
-        .input-field input, .input-field select {
-            width: 100%; border: none; border-bottom: 1px solid #ddd;
-            padding: 10px 0; font-size: 15px; outline: none; background: transparent;
-        }
-
-        .filter-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;
-            background: #f8f9fa; padding: 15px; border-radius: 8px;
-        }
-
-        .category-title {
-            color: var(--google-purple); font-size: 18px; font-weight: bold;
-            margin: 10px 0 20px 0; border-bottom: 2px solid var(--google-purple); padding-bottom: 5px;
-        }
-
-        .question-block { margin-bottom: 35px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
-
-        .scale-container {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 20px; overflow-x: auto; padding: 10px 0;
-        }
-
-        .scale-option { display: flex; flex-direction: column; align-items: center; min-width: 35px; }
-        .scale-num { font-size: 12px; margin-bottom: 5px; color: #70757a; }
-        .extreme-label { font-size: 13px; font-weight: bold; color: var(--google-purple); width: 90px; text-align: center; }
-
-        .btn-primary {
-            background-color: var(--google-purple); color: white; border: none;
-            padding: 12px 30px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;
-        }
-
-        .btn-secondary {
-            background: white; color: var(--google-purple); border: 1px solid var(--border-gray);
-            padding: 12px 30px; border-radius: 4px; cursor: pointer; margin-left: 10px;
-        }
-
-        input[type="radio"] { cursor: pointer; width: 20px; height: 20px; }
-        input[type="checkbox"] { cursor: pointer; transform: scale(1.2); margin-right: 10px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="form-container">
-    <div class="form-header-bar"></div>
-    <div class="form-card header-card">
-        <h1>Buku Penilaian Pegawai Sintelis</h1>
-        <p>Formulir evaluasi kompetensi teknis terhadap peralatan dan prosedur kerja.</p>
-    </div>
-
-    <div class="form-card">
-        <h3>PROFIL PEGAWAI</h3>
-        <div class="input-field">
-            <label>NAMA LENGKAP *</label>
-            <input type="text" id="name" placeholder="Masukkan nama lengkap">
-        </div>
-        <div class="input-field">
-            <label>NIPP *</label>
-            <input type="text" id="nipp" placeholder="Masukkan NIPP">
-        </div>
-        <div class="input-field">
-            <label>UNIT KEDUDUKAN / RESOR *</label>
-            <input type="text" id="unit" placeholder="Contoh: UPT Resor Sintelis 2.6 Kiaracondong">
-        </div>
-    </div>
-
-    <div class="form-card">
-        <h3>PILIH KATEGORI PERALATAN *</h3>
-        <p style="font-size: 13px; color: #666;">Centang peralatan di bawah ini untuk memunculkan daftar pertanyaan spesifik.</p>
-        <div id="filterArea" class="filter-grid"></div>
-    </div>
-
-    <form id="assessmentForm">
-        <div id="questionsWrapper"></div>
+    <div id="mainFormContainer" class="form-container">
+        <div class="form-header-bar"></div>
         
-        <div style="margin-top: 20px; text-align: center;">
-            <button type="submit" class="btn-primary">Kirim Penilaian</button>
-            <button type="button" class="btn-secondary" onclick="location.reload()">Reset Form</button>
+        <div class="form-card header-card">
+            <h1>BUKU PENILAIAN PEGAWAI SINTELIS</h1>
+            <p>Formulir evaluasi kompetensi teknis terhadap peralatan dan prosedur kerja.</p>
+            <hr>
+            <p class="required-text">* Menunjukkan pertanyaan yang wajib diisi</p>
         </div>
-    </form>
-</div>
 
-<script>
-    // DATA LENGKAP BERDASARKAN DOKUMEN 
-    const allData = {
-        "itcs_ms": {
-            title: "I. ITCS-MS (Persinyalan Mekanik)",
-            items: ["SOP Perawatan ITCS-MS", "Perawatan PDSM", "Peraga Sinyal Mekanik", "Wesel Mekanik", "Negative Check Mekanik", "Saluran Kawat", "Peralatan Catu Daya Mekanik"]
-        },
-        "westrace": {
-            title: "II. PDSE (Westrace MK I)",
-            items: ["Modul HVLM", "Modul VPIM", "Modul VROM", "Modul SOF", "Modul NCDC", "Modul LCP", "Pin Terminal di ER"]
-        },
-        "mis801": {
-            title: "III. PDSE (MIS 801)",
-            items: ["Modul ZRE", "Modul ZRI", "Modul RE", "Modul RI", "Modul R", "Modul SWH", "Modul SWHW", "Data Logger", "LCP MIS"]
-        },
-        "motor_wesel": {
-            title: "IV. Motor Wesel",
-            items: ["Komponen Dalam BSG-9", "Komponen Dalam S-90", "Komponen Dalam NSE", "Komponen Dalam T84M", "Wiring Wesel", "Terminal Pin"]
-        },
-        "ka_detect": {
-            title: "V. Pendeteksi KA",
-            items: ["Head Sensor Altpro", "Head Sensor Siemens", "Wheel Sensor Frauscher", "Wheel Sensor Thales", "Track Circuit", "Modul VUR/MPU"]
-        },
-        "laa_gardu": {
-            title: "VI. LAA & Gardu Traksi",
-            items: ["Jaringan LAA", "Feeding System", "VCB / LBS 20 KV", "Transformator & Penyearah", "HSCB", "Grounding & Arrester"]
-        },
-        "telekomunikasi": {
-            title: "VII. Telekomunikasi",
-            items: ["Radio Lokomotif", "Central Radio (IDU/ODU)", "Base Station", "Peralatan PK", "Serat Optik"]
-        },
-        "admin_sap": {
-            title: "VIII. Administrasi & SAP",
-            items: ["Membuat RAB & Nota Dinas", "Pengelolaan Dokumen", "SAP MM / SAP-LAM", "Membuat & Men-TECO WO"]
-        }
-    };
-
-    const filterArea = document.getElementById('filterArea');
-    const questionsWrapper = document.getElementById('questionsWrapper');
-
-    // Buat Checkbox secara otomatis
-    for (let key in allData) {
-        const div = document.createElement('div');
-        div.innerHTML = `<label><input type="checkbox" class="cat-filter" value="${key}"> ${allData[key].title}</label>`;
-        filterArea.appendChild(div);
-    }
-
-    // Event Listener untuk memantau perubahan checkbox
-    document.addEventListener('change', function(e) {
-        if (e.target.classList.contains('cat-filter')) {
-            renderQuestions();
-        }
-    });
-
-    function renderQuestions() {
-        questionsWrapper.innerHTML = ''; // Bersihkan pertanyaan lama
-        const checkedBoxes = document.querySelectorAll('.cat-filter:checked');
-
-        checkedBoxes.forEach(cb => {
-            const catKey = cb.value;
-            const group = allData[catKey];
-
-            const card = document.createElement('div');
-            card.className = 'form-card';
+        <div class="form-card">
+            <h3>PROFIL PRIBADI</h3>
+            <div class="input-field">
+                <label>NAMA LENGKAP *</label>
+                <input type="text" id="name" placeholder="Masukkan nama lengkap" required>
+            </div>
+            <div class="input-field">
+                <label>NIPP *</label>
+                <input type="text" id="nipp" placeholder="Masukkan NIPP" required>
+            </div>
             
-            let html = `<div class="category-title">${group.title}</div>`;
+            <div class="input-field">
+                <label>Jenis Kelamin *</label>
+                <select id="gender" required>
+                    <option value="">Pilih</option>
+                    <option value="Pria">Pria</option>
+                    <option value="Wanita">Wanita</option>
+                </select>
+            </div>
 
-            group.items.forEach((item, index) => {
-                html += `
-                <div class="question-block">
-                    <label>Sejauh mana Anda memahami fungsi dan prinsip kerja <strong>${item}</strong>? *</label>
-                    <div class="scale-container">
-                        <span class="extreme-label">Sangat Kurang</span>
-                        ${generateScale(catKey, index)}
-                        <span class="extreme-label">Sangat Baik</span>
-                    </div>
-                </div>`;
-            });
+            <div class="input-field">
+                <label>Kedudukan (Daop/Divre) *</label>
+                <select id="daop" required>
+                    <option value="">Pilih Daop/Divre</option>
+                    <option value="Kantor Pusat">Kantor Pusat</option>
+                    <option value="Daop 1 Jakarta">Daop 1 Jakarta</option>
+                    <option value="Daop 2 Bandung">Daop 2 Bandung</option>
+                    <option value="Daop 3 Cirebon">Daop 3 Cirebon</option>
+                    <option value="Daop 4 Semarang">Daop 4 Semarang</option>
+                    <option value="Daop 5 Purwokerto">Daop 5 Purwokerto</option>
+                    <option value="Daop 6 Yogyakarta">Daop 6 Yogyakarta</option>
+                    <option value="Daop 7 Madiun">Daop 7 Madiun</option>
+                    <option value="Daop 8 Surabaya">Daop 8 Surabaya</option>
+                    <option value="Daop 9 Jember">Daop 9 Jember</option>
+                    <option value="Divre I Sumatera Utara">Divre I Sumatera Utara</option>
+                    <option value="Divre II Sumatera Barat">Divre II Sumatera Barat</option>
+                    <option value="Divre III Palembang">Divre III Palembang</option>
+                    <option value="Divre IV Tanjungkarang">Divre IV Tanjungkarang</option>
+                    <option value="LRT Jabodebek">LRT Jabodebek</option>
+                </select>
+            </div>
 
-            card.innerHTML = html;
-            questionsWrapper.appendChild(card);
-        });
-    }
+            <div class="input-field">
+                <label>Jabatan *</label>
+                <select id="position" required>
+                    <option value="">Pilih Jabatan</option>
+                    <option value="Pelaksana">Pelaksana</option>
+                    <option value="Calon Petugas Negative Check">Calon Petugas Negative Check</option>
+                    <option value="Petugas Negatif Cek">Petugas Negatif Cek</option>
+                    <option value="Supervisor Perawatan Perbaikan UPT Resor">Supervisor Perawatan Perbaikan UPT Resor</option>
+                    <option value="Supervisor Perawatan Preventif UPT Resor">Supervisor Perawatan Preventif UPT Resor</option>
+                    <option value="Supervisor Perbaikan Workshop">Supervisor Perbaikan Workshop</option>
+                    <option value="Supervisor Rekayasa Perawatan Workshop">Supervisor Rekayasa Perawatan Workshop</option>
+                    <option value="Kepala UPT Resor">Kepala UPT Resor</option>
+                    <option value="Kepala UPT Workshop">Kepala UPT Workshop</option>
+                    <option value="Assistant Manager">Assistant Manager</option>
+                    <option value="Specialist">Specialist</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+        </div>
 
-    function generateScale(cat, idx) {
-        let radios = '';
-        for (let i = 1; i <= 10; i++) {
-            radios += `
-            <div class="scale-option">
-                <span class="scale-num">${i}</span>
-                <input type="radio" name="q_${cat}_${idx}" value="${i}" required>
-            </div>`;
-        }
-        return radios;
-    }
+        <div id="mandatoryITCS">
+            </div>
 
-    document.getElementById('assessmentForm').onsubmit = function(e) {
-        e.preventDefault();
-        const name = document.getElementById('name').value;
-        if(!name) { alert("Mohon isi Nama Pegawai!"); return; }
-        alert("Terima kasih! Penilaian untuk " + name + " telah tersimpan.");
-    };
-</script>
+        <div class="form-card">
+            <h3>PILIH KATEGORI PERALATAN TAMBAHAN</h3>
+            <p style="font-size: 0.85em; color: #666;">Centang peralatan tambahan lainnya untuk memunculkan penilaian spesifik.</p>
+            <div id="filterArea" class="filter-grid"></div>
+        </div>
 
+        <form id="assessmentForm">
+            <div id="dynamicQuestionsWrapper"></div>
+            
+            <div class="form-footer">
+                <button type="submit" class="btn-primary">Kirim Penilaian</button>
+                <button type="button" class="btn-secondary" onclick="location.reload()">Clear form</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="successPage" class="form-container hidden" style="text-align: center;">
+        <div class="form-header-bar"></div>
+        <div class="form-card">
+            <h1 style="color: #673ab7;">Terima Kasih!</h1>
+            <p>Tanggapan Anda telah direkam.</p>
+            <a href="#" onclick="location.reload()" style="color: #673ab7; text-decoration: none; font-size: 0.9em;">Kirim tanggapan lain</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
