@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Penilaian Kompetensi Teknis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Form Penilaian Kompetensi Teknis Pegawai</h1>
+
+<form id="penilaianForm">
+
+  <!-- PROFIL -->
+  <fieldset>
+    <legend>Profil Pegawai</legend>
+
+    <label>Nama Lengkap</label>
+    <input type="text" required>
+
+    <label>NIPP</label>
+    <input type="text" required>
+
+    <label>Unit / Daop</label>
+    <input type="text" required>
+
+    <label>Jabatan</label>
+    <input type="text" required>
+  </fieldset>
+
+  <!-- PILIH PERALATAN -->
+  <fieldset>
+    <legend>Pilih Peralatan yang Dimiliki</legend>
+
+    <label><input type="checkbox" value="westrace" onchange="toggleSection(this)"> PDSE A. Westrace MK I</label>
+    <label><input type="checkbox" value="mis801" onchange="toggleSection(this)"> PDSE B. MIS 801</label>
+    <label><input type="checkbox" value="bsg9" onchange="toggleSection(this)"> Motor Wesel BSG-9</label>
+  </fieldset>
+
+  <!-- SECTION WESTRACE -->
+  <fieldset id="westrace" class="hidden">
+    <legend>PDSE A. Westrace MK I</legend>
+
+    <label>HVLM</label>
+    <input type="number" min="1" max="10">
+
+    <label>VPIM</label>
+    <input type="number" min="1" max="10">
+
+    <label>VROM</label>
+    <input type="number" min="1" max="10">
+  </fieldset>
+
+  <!-- SECTION MIS 801 -->
+  <fieldset id="mis801" class="hidden">
+    <legend>PDSE B. MIS 801</legend>
+
+    <label>ZRE</label>
+    <input type="number" min="1" max="10">
+
+    <label>ZRI</label>
+    <input type="number" min="1" max="10">
+  </fieldset>
+
+  <!-- SECTION MOTOR WESEL -->
+  <fieldset id="bsg9" class="hidden">
+    <legend>Motor Wesel BSG-9</legend>
+
+    <label>Komponen Dalam</label>
+    <input type="number" min="1" max="10">
+
+    <label>Wiring</label>
+    <input type="number" min="1" max="10">
+  </fieldset>
+
+  <button type="submit">Kirim</button>
+</form>
+
+<script src="script.js"></script>
+</body>
+</html>
