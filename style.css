@@ -1,114 +1,249 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); /* Latar belakang tidak polos */
-    background-attachment: fixed;
-    min-height: 100vh;
-    color: #333;
-}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuesioner Penilaian Teknis Pegawai</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-clipboard-check"></i>
+                <h1>Penilaian Teknis Pegawai</h1>
+            </div>
+            <div class="subtitle">Sistem Evaluasi Kompetensi Teknis Peralatan</div>
+        </header>
 
-.main-wrapper {
-    padding: 40px 20px;
-}
+        <main>
+            <section class="employee-info">
+                <h2><i class="fas fa-user-circle"></i> Data Pegawai</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Nama:</span>
+                        <span class="info-value">WIHARJO</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">NIPP:</span>
+                        <span class="info-value">55165</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Jabatan:</span>
+                        <span class="info-value">Petugas Negative Check UPT Resor Sintelis 2.6 Kiaracondong</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Golongan:</span>
+                        <span class="info-value">PT.1 / II D</span>
+                    </div>
+                </div>
+            </section>
 
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
+            <section class="equipment-selection">
+                <h2><i class="fas fa-tools"></i> Pilih Peralatan untuk Dinilai</h2>
+                <p class="instruction">Pilih peralatan yang dimiliki dan akan dinilai kompetensi teknisnya. Hanya pertanyaan dari peralatan yang dipilih yang akan ditampilkan.</p>
+                
+                <div class="selection-container">
+                    <div class="category">
+                        <h3><i class="fas fa-desktop"></i> ITCS-MS</h3>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="itcs-ms-all" class="category-all">
+                                <span class="checkmark"></span>
+                                Pilih Semua ITCS-MS
+                            </label>
+                        </div>
+                        <div class="sub-items">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="itcs-ms" class="equipment-item" data-category="ITCS-MS">
+                                <span class="checkmark"></span>
+                                ITCS-MS (Semua Sub-item)
+                            </label>
+                        </div>
+                    </div>
 
-header {
-    text-align: center;
-    border-bottom: 2px solid #eee;
-    margin-bottom: 30px;
-}
+                    <div class="category">
+                        <h3><i class="fas fa-microchip"></i> PDSE (Peralatan Dalam Sinyal Elektrik)</h3>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-all" class="category-all">
+                                <span class="checkmark"></span>
+                                Pilih Semua PDSE
+                            </label>
+                        </div>
+                        <div class="sub-items">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-a" class="equipment-item" data-category="PDSE">
+                                <span class="checkmark"></span>
+                                A. Westrace MK I
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-b" class="equipment-item" data-category="PDSE">
+                                <span class="checkmark"></span>
+                                B. MIS 801
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-c" class="equipment-item" data-category="PDSE">
+                                <span class="checkmark"></span>
+                                C. SIL-02
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-d" class="equipment-item" data-category="PDSE">
+                                <span class="checkmark"></span>
+                                D. SIL-02 Next G
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-e" class="equipment-item" data-category="PDSE">
+                                <span class="checkmark"></span>
+                                E. VPI
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-f" class="equipment-item" data-category="PDSE">
+                                <span class="checkmark"></span>
+                                F. ELIXS
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-g" class="equipment-item" data-category="PDSE">
+                                <span class="checkmark"></span>
+                                G. SSI
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdse-h" class="equipment-item" data-category="PDSE">
+                                <span class="checkmark"></span>
+                                H. WESTRACE MK II
+                            </label>
+                        </div>
+                    </div>
 
-.user-info {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 0.9em;
-    color: #666;
-}
+                    <div class="category">
+                        <h3><i class="fas fa-cogs"></i> Motor Wesel</h3>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="motor-wesel-all" class="category-all">
+                                <span class="checkmark"></span>
+                                Pilih Semua Motor Wesel
+                            </label>
+                        </div>
+                        <div class="sub-items">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="motor-a" class="equipment-item" data-category="Motor Wesel">
+                                <span class="checkmark"></span>
+                                A. BSG-9
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="motor-b" class="equipment-item" data-category="Motor Wesel">
+                                <span class="checkmark"></span>
+                                B. S-90
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="motor-c" class="equipment-item" data-category="Motor Wesel">
+                                <span class="checkmark"></span>
+                                C. NSE
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="motor-d" class="equipment-item" data-category="Motor Wesel">
+                                <span class="checkmark"></span>
+                                D. T84M
+                            </label>
+                        </div>
+                    </div>
 
-.selection-card {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-}
+                    <div class="category">
+                        <h3><i class="fas fa-signal"></i> Sinyal</h3>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="sinyal-all" class="category-all">
+                                <span class="checkmark"></span>
+                                Pilih Semua Sinyal
+                            </label>
+                        </div>
+                        <div class="sub-items">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="sinyal-a" class="equipment-item" data-category="Sinyal">
+                                <span class="checkmark"></span>
+                                A. SIL-02
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="sinyal-b" class="equipment-item" data-category="Sinyal">
+                                <span class="checkmark"></span>
+                                B. MIS-801
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="sinyal-c" class="equipment-item" data-category="Sinyal">
+                                <span class="checkmark"></span>
+                                C. Westrace
+                            </label>
+                        </div>
+                    </div>
 
-.checkbox-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
+                    <div class="category">
+                        <h3><i class="fas fa-train"></i> Pendeteksi KA</h3>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pendeteksi-all" class="category-all">
+                                <span class="checkmark"></span>
+                                Pilih Semua Pendeteksi KA
+                            </label>
+                        </div>
+                        <div class="sub-items">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pendeteksi-a" class="equipment-item" data-category="Pendeteksi KA">
+                                <span class="checkmark"></span>
+                                A. Altpro
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pendeteksi-b" class="equipment-item" data-category="Pendeteksi KA">
+                                <span class="checkmark"></span>
+                                B. Siemens
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pendeteksi-c" class="equipment-item" data-category="Pendeteksi KA">
+                                <span class="checkmark"></span>
+                                C. Frauscher
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pendeteksi-d" class="equipment-item" data-category="Pendeteksi KA">
+                                <span class="checkmark"></span>
+                                D. Thales
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pendeteksi-e" class="equipment-item" data-category="Pendeteksi KA">
+                                <span class="checkmark"></span>
+                                E. Track Circuit
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
-.question-card {
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 20px;
-}
+                <div class="selection-actions">
+                    <button id="generate-questions" class="btn-primary">
+                        <i class="fas fa-list-check"></i> Tampilkan Pertanyaan
+                    </button>
+                    <button id="reset-selection" class="btn-secondary">
+                        <i class="fas fa-undo"></i> Reset Pilihan
+                    </button>
+                </div>
+            </section>
 
-.question-text {
-    font-weight: 600;
-    margin-bottom: 20px;
-    display: block;
-}
+            <section class="questions-container" id="questions-container">
+                <!-- Pertanyaan akan ditampilkan di sini secara dinamis -->
+            </section>
 
-.scale-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+            <section class="results-container" id="results-container">
+                <!-- Hasil penilaian akan ditampilkan di sini -->
+            </section>
+        </main>
 
-.radio-group {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 600px;
-    position: relative;
-    padding: 10px 0;
-}
+        <footer>
+            <div class="footer-info">
+                <p><i class="fas fa-info-circle"></i> Sistem Penilaian Teknis Pegawai - UPT Resor Sintelis 2.6 Kiaracondong</p>
+                <p class="copyright">© 2023 KAI - Kereta Api Indonesia. Semua hak dilindungi.</p>
+            </div>
+        </footer>
+    </div>
 
-.radio-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
-
-.label-text {
-    font-size: 0.8em;
-    color: #777;
-}
-
-.extremes {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 650px;
-    font-size: 0.9em;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.btn-primary, .btn-submit {
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-primary { background: #1a2a6c; color: white; }
-.btn-submit { background: #27ae60; color: white; width: 100%; font-size: 1.1em; }
-.hidden { display: none; }
+    <script src="script.js"></script>
+</body>
+</html>
