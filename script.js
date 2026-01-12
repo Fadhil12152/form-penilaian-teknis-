@@ -1,91 +1,71 @@
-// Data ITCS-MS (Wajib - Grid 5 Pilihan sesuai Gambar)
-const itcsItems = [
+const itcsData = [
     "Perawatan PDSM", "Perawatan Peraga Sinyal Mekanik", "Perawatan Wesel Mekanik",
     "Negative Check Persinyalan Mekanik", "Perawatan Saluran Kawat", "Perawatan Wesel Elektrik",
     "Perawatan PDSE", "Perawatan Peraga Sinyal Elektrik", "Perawatan Axle Counter",
     "Perawatan Track Circuit", "Perawatan Location Case", "Perawatan Pointlock/Perintang/Pelalau",
-    "Perawatan WLSE", "Perawatan Kontak Deteksi", "Perawatan Pintu Perlintasan",
-    "Perawatan Catu Daya", "Perawatan Radio Lokomotif", "Peralatan Telkom di Stasiun",
-    "Peralatan Telkom di Luar Stasiun", "Peralatan Telkom di Pintu Perlintasan",
-    "Perawatan Serat Optik", "Perawatan Saluran Blok 1 & 6 bln", "Uji Fungsi LBD",
-    "Perawatan Bangunan E-House", "Perawatan Trafo Kering", "Trafo Location Case & Trafo Tiang",
-    "Perawatan Lightning Arrester", "Pemeriksaan Kabel Outgoing", "Pengetesan Relay Proteksi DC"
+    "Perawatan WLSE", "Perawatan Kontak Deteksi"
 ];
 
-const additionalEquip = {
-    "westrace_mk1": {
-        title: "(II.A) PDSE - Westrace MK I",
-        items: ["modul HVLM", "modul VPIM", "modul Vrom", "modul SOF", "modul NCDC", "modul LCP", "pin terminal di ER"]
-    },
-    "mis801": {
-        title: "(II.B) PDSE - MIS 801",
-        items: ["modul ZRE", "modul ZRI", "modul RE", "modul RI", "modul R", "modul SWH", "modul SWHW", "modul SWZH", "modul SAH", "modul SWR", "modul SWVF", "modul WF", "modul WAD", "modul DW", "modul GA", "modul FRM", "modul FRB", "modul FL", "modul SCHL", "modul LCP", "modul Data Logger", "Pin terminal di ER"]
-    },
-    "sil02": {
-        title: "(II.C) PDSE - SIL 02",
-        items: ["modul PLC", "modul Remote I/O", "modul I/O Logic", "modul Relay", "Pin Terminal di ER", "modul Data Logger", "modul LCP"]
-    },
-    "sil02_nextg": {
-        title: "(II.D) PDSE - SIL 02 Next G",
-        items: ["modul X-SB01", "modul X CPU", "modul X COM", "modul X-DI", "modul X-DO", "modul Himatrix FI DI", "modul Himatrix F2 DO", "modul Himatrix F3O", "modul Himatrix F3 DIO", "modul Relay", "modul LCP/VDU", "Pin terminal di ER", "modul Data Logger"]
-    },
-    "vpi_elixs_ssi": {
-        title: "(II.E-G) VPI / Elixs / SSI",
-        items: ["CPU/PD", "VRD", "I/O BUS", "VPM", "CPS", "MPM", "DLM", "TFM", "Technician Terminal"]
-    },
-    "motor_wesel": {
-        title: "(III) Motor Wesel (BSG-9, S-90, NSE, T84M)",
-        items: ["Komponen dalam", "Fungsi komponen", "Wiring", "Terminal pin"]
-    }
+const equipmentList = {
+    "westrace_mk1": { title: "(II.A) Westrace MK I", items: ["HVLM", "VPIM", "Vrom", "SOF", "NCDC", "LCP", "Pin terminal di ER"] },
+    "mis_801": { title: "(II.B) MIS 801", items: ["ZRE", "ZRI", "RE", "RI", "R", "SWH", "SWHW", "SWZH", "SAH", "SWR", "SWVF", "WF", "WAD", "DW", "GA", "FRM", "FRB", "FL", "SCHL", "LCP", "Data Logger", "Pin terminal di ER"] },
+    "sil_02": { title: "(II.C) SIL 02", items: ["PLC", "Remote I/O", "I/O Logic", "Relay", "Pin Terminal di ER", "Data Logger", "LCP"] },
+    "sil_02_nextg": { title: "(II.D) SIL 02 Next G", items: ["X-SB01", "X CPU", "X COM", "X-DI", "X-DO", "Himatrix FI DI", "Himatrix F2 DO", "Himatrix F3O", "Himatrix F3 DIO", "Relay", "LCP/VDU", "Pin terminal di ER", "Data Logger"] },
+    "vpi": { title: "(II.E) VPI", items: ["CPU/PD", "VRD", "I/O BUS", "SBO", "DI", "NVI", "NVO", "CSEX", "Relay", "LCP"] },
+    "elixs": { title: "(II.F) Elixs", items: ["VPM", "CPS", "UCI", "CDU", "VIO", "Data Logger", "VDU", "Interface Relay"] },
+    "ssi": { title: "(II.G) SSI", items: ["MPM", "DLM", "TFM", "Technician Terminal", "DMPM", "PPM", "LCP/VDU"] },
+    "westrace_mk2": { title: "(II.H) Westrace MK II", items: ["PM", "PIM", "ROM", "LOM", "TCOM", "SOM", "RSA", "SM-MAU", "VDU"] },
+    "motor_wesel": { title: "(III) Motor Wesel", items: ["BSG-9 Komponen Dalam", "BSG-9 Fungsi", "S-90 Wiring", "NSE Terminal Pin", "T84M Komponen"] },
+    "sinyal": { title: "(IV) Sinyal", items: ["SIL-02 Box Sinyal", "MIS 801 Terminal", "Westrace Cheksheet"] },
+    "pendeteksi": { title: "(V) Pendeteksi KA", items: ["Altpro Head Sensor", "Siemens Wde", "Frauscher AEB", "Thales Serial Board", "Track Circuit"] },
+    "catu_daya": { title: "(VI) Catu Daya", items: ["Westrace UPS", "MIS 801 Genset", "SIL 02 Batere Bank"] },
+    "laa": { title: "(VII) Listrik Aliran Atas", items: ["Feeding System", "Konstruksi LAA", "VCB/LBS 20KV", "HSCB", "Grounding"] },
+    "perlintasan": { title: "(VIII) Pintu Perlintasan", items: ["JPL Semi Automatic Wiring", "JPL HG Barrier"] },
+    "telkom": { title: "(IX) Telekomunikasi", items: ["Central Radio", "Radio Lokomotif", "Waystation", "PK GPS"] },
+    "sinyal_mekanik": { title: "(X) Sinyal Mekanik", items: ["PDSM SHM/SKTM", "Sistem Blok", "Wesel Mekanik Arrow", "Saluran Kawat"] },
+    "admin": { title: "(XI) Administrasi", items: ["Membuat RAB", "Nota Dinas", "SAP MM", "Alur Kontrak", "WO SRI"] },
+    "lain_lain": { title: "(XII) Alat Kerja", items: ["AVO Meter", "Las Listrik", "Insulation Tester", "OTDR", "VSWR Meter", "Splicer"] }
 };
 
 const mandatoryArea = document.getElementById('mandatoryITCSArea');
 const filterGrid = document.getElementById('filterGrid');
 const dynamicWrapper = document.getElementById('dynamicQuestionsWrapper');
 
-function generateScale10(cat, idx) {
+function getRadios(cat, idx) {
     let html = `<div class="scale-container"><span class="extreme-label">Sangat Kurang</span>`;
-    for (let i = 1; i <= 10; i++) {
-        html += `<div class="scale-option"><span>${i}</span><input type="radio" name="${cat}_${idx}" value="${i}" required></div>`;
-    }
-    html += `<span class="extreme-label">Sangat Baik</span></div>`;
-    return html;
+    for(let i=1; i<=10; i++) html += `<div class="scale-option"><span>${i}</span><input type="radio" name="${cat}_${idx}" value="${i}" required></div>`;
+    return html + `<span class="extreme-label">Sangat Baik</span></div>`;
 }
 
-// Render ITCS-MS (Wajib - Menggunakan Skala 5 sesuai Gambar e66bec)
-function renderMandatory() {
-    let html = `<div class="grid-5-row"><div></div><div class="grid-header">Sangat Kurang</div><div class="grid-header">Kurang</div><div class="grid-header">Cukup</div><div class="grid-header">Baik</div><div class="grid-header">Sangat Baik</div></div>`;
-    itcsItems.forEach((item, idx) => {
-        html += `<div class="grid-5-row"><div style="font-size:13px;">${idx+1}. ${item}</div>`;
-        for (let i = 1; i <= 5; i++) {
-            html += `<div style="text-align:center;"><input type="radio" name="itcs_${idx}" value="${i}" required></div>`;
-        }
-        html += `</div>`;
-    });
-    mandatoryArea.innerHTML = html;
-}
+// Render ITCS-MS (Wajib)
+itcsData.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'question-item';
+    div.innerHTML = `<label>${idx+1}. Sejauh mana Anda memahami <strong>${item}</strong>? *</label>${getRadios('itcs', idx)}`;
+    mandatoryArea.appendChild(div);
+});
 
-// Render Checkboxes
-for (let key in additionalEquip) {
+// Render Filter Checkboxes
+for (let key in equipmentList) {
     const label = document.createElement('label');
     label.className = 'checkbox-item';
-    label.innerHTML = `<input type="checkbox" class="cat-filter" value="${key}"> ${additionalEquip[key].title}`;
+    label.innerHTML = `<input type="checkbox" class="cat-filter" value="${key}"> ${equipmentList[key].title}`;
     filterGrid.appendChild(label);
 }
 
-// Logic Tampilan Dinamis (Skala 1-10 sesuai Gambar e49a6b)
+// Logic Tampilan Dinamis
 document.addEventListener('change', (e) => {
     if (e.target.classList.contains('cat-filter')) {
         dynamicWrapper.innerHTML = '';
         document.querySelectorAll('.cat-filter:checked').forEach(cb => {
-            const data = additionalEquip[cb.value];
+            const data = equipmentList[cb.value];
             const card = document.createElement('div');
             card.className = 'form-card';
             card.innerHTML = `<h3 class="category-title">${data.title}</h3>`;
             data.items.forEach((item, idx) => {
                 const qDiv = document.createElement('div');
                 qDiv.className = 'question-item';
-                qDiv.innerHTML = `<label>Sejauh mana Anda memahami fungsi dan prinsip kerja <strong>${item}</strong>? *</label>${generateScale10(cb.value, idx)}`;
+                qDiv.innerHTML = `<label>Sejauh mana Anda memahami <strong>${item}</strong>? *</label>${getRadios(cb.value, idx)}`;
                 card.appendChild(qDiv);
             });
             dynamicWrapper.appendChild(card);
@@ -95,9 +75,7 @@ document.addEventListener('change', (e) => {
 
 document.getElementById('assessmentForm').onsubmit = (e) => {
     e.preventDefault();
-    document.getElementById('mainFormPage').style.display = 'none';
+    document.getElementById('mainFormPage').classList.add('hidden');
     document.getElementById('successPage').classList.remove('hidden');
-    window.scrollTo(0, 0);
+    window.scrollTo(0,0);
 };
-
-renderMandatory();
