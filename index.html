@@ -17,17 +17,6 @@
                 <div class="forms-title">
                     <h1>FORM EVALUASI PENILAIAN TERHADAP PEGAWAI</h1>
                 </div>
-                <div class="user-info">
-                    <div class="account-info">
-                        <i class="fas fa-user-circle"></i>
-                        <span>fadhli12152@gmail.com</span>
-                        <a href="#" class="switch-account">Switch account</a>
-                    </div>
-                    <div class="share-info">
-                        <i class="fas fa-eye-slash"></i>
-                        <span>Not shared</span>
-                    </div>
-                </div>
             </div>
             <div class="header-description">
                 <p><strong>Yth. Bapak/Ibu Pegawai</strong></p>
@@ -56,7 +45,7 @@
                             <div class="question-required">This is a required question</div>
                         </div>
                         <div class="question-input">
-                            <input type="text" class="text-input" placeholder="Your answer" required>
+                            <input type="text" class="text-input" id="nama-lengkap" placeholder="Your answer" required>
                         </div>
                     </div>
 
@@ -67,7 +56,7 @@
                             <div class="question-required">This is a required question</div>
                         </div>
                         <div class="question-input">
-                            <input type="text" class="text-input" placeholder="Your answer" required>
+                            <input type="text" class="text-input" id="nipp" placeholder="Your answer" required>
                         </div>
                     </div>
 
@@ -120,7 +109,7 @@
                             <div class="question-required">This is a required question</div>
                         </div>
                         <div class="question-input">
-                            <select class="dropdown-input" required>
+                            <select class="dropdown-input" id="kedudukan" required>
                                 <option value="" disabled selected>Choose</option>
                                 <option value="Kantor Pusat">Kantor Pusat</option>
                                 <option value="Daop 1 Jakarta">Daop 1 Jakarta</option>
@@ -148,7 +137,7 @@
                             <div class="question-required">This is a required question</div>
                         </div>
                         <div class="question-input">
-                            <select class="dropdown-input" required>
+                            <select class="dropdown-input" id="jabatan" required>
                                 <option value="" disabled selected>Choose</option>
                                 <option value="Pelaksana">Pelaksana</option>
                                 <option value="Calon Petugas Negative Check">Calon Petugas Negative Check</option>
@@ -364,7 +353,7 @@
                         <button type="button" class="btn-back" id="back-to-page1">
                             <i class="fas fa-arrow-left"></i> Back
                         </button>
-                        <button type="button" class="btn-clear">
+                        <button type="button" class="btn-clear" id="clear-page2">
                             <i class="fas fa-eraser"></i> Clear form
                         </button>
                         <button type="button" class="btn-next" id="next-to-page3">
@@ -385,7 +374,7 @@
                     <!-- Lanjutan Tabel ITCS-MS -->
                     <div class="question-container">
                         <div class="question-header">
-                            <label class="question-label">Lanjutan Penilaian ITCS-MS (26-29)</label>
+                            <label class="question-label">Lanjutan Penilaian ITCS-MS (25-29)</label>
                         </div>
                         
                         <div class="assessment-table">
@@ -581,7 +570,7 @@
                             <label class="question-label">Komentar dan Saran Tambahan</label>
                         </div>
                         <div class="question-input">
-                            <textarea class="text-input textarea-input" placeholder="Tuliskan komentar dan saran Anda di sini..." rows="4"></textarea>
+                            <textarea class="text-input textarea-input" id="komentar" placeholder="Tuliskan komentar dan saran Anda di sini..." rows="4"></textarea>
                         </div>
                     </div>
 
@@ -590,7 +579,7 @@
                         <button type="button" class="btn-back" id="back-to-page2">
                             <i class="fas fa-arrow-left"></i> Back
                         </button>
-                        <button type="button" class="btn-clear">
+                        <button type="button" class="btn-clear" id="clear-page3">
                             <i class="fas fa-eraser"></i> Clear form
                         </button>
                         <button type="submit" class="btn-submit">
