@@ -1,675 +1,770 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Evaluasi Penilaian Pegawai - Sistem Persinyalan</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <!-- Header dengan navigasi -->
-        <header>
-            <div class="logo-container">
-                <div class="logo">
-                    <i class="fas fa-train"></i>
-                    <span>SISTEM PERSINYALAN</span>
+// Data struktur untuk semua peralatan dan pertanyaannya
+const equipmentData = {
+    // PDSE (Peralatan Dalam Sinyal Elektrik)
+    westrace_mk1: {
+        id: "westrace_mk1",
+        name: "Westrace MK I",
+        sectionId: "section4",
+        questions: [
+            { id: "hvlm", text: "Sejauh mana anda memahami fungsi dan prinsip kerja modul HVLM" },
+            { id: "vpim", text: "Sejauh mana anda memahami fungsi dan prinsip kerja modul VPIM" },
+            { id: "vrom", text: "Sejauh mana anda memahami fungsi dan prinsip kerja modul VROM" },
+            { id: "sof", text: "Sejauh mana anda memahami fungsi dan prinsip kerja modul SOF" },
+            { id: "ncdc", text: "Sejauh mana anda memahami fungsi dan prinsip kerja modul NCDC" },
+            { id: "lcp", text: "Sejauh mana anda memahami fungsi dan prinsip kerja modul LCP" },
+            { id: "pin_terminal", text: "Sejauh mana anda memahami fungsi dan prinsip kerja modul pin terminal di ER" }
+        ]
+    },
+    mis_801: {
+        id: "mis_801",
+        name: "MIS 801",
+        sectionId: "section6",
+        questions: [
+            { id: "zre", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul ZRE" },
+            { id: "zri", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul ZRI" },
+            { id: "re", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul RE" },
+            { id: "ri", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul RI" },
+            { id: "r", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul R" },
+            { id: "swh", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul SWH" },
+            { id: "swhw", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul SWHW" },
+            { id: "swzh", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul SWZH" },
+            { id: "sah", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul SAH" },
+            { id: "swr", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul SWR" },
+            { id: "swvf", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul SWVF" },
+            { id: "wf", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul WF" },
+            { id: "wad", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul WAD" },
+            { id: "dw", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul DW" },
+            { id: "ga", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul GA" },
+            { id: "frm", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul FRM" },
+            { id: "frb", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul FRB" },
+            { id: "fl", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul FL" },
+            { id: "schl", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul SCHL" },
+            { id: "lcp_mis", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul LCP" },
+            { id: "data_logger_mis", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul Data Logger" },
+            { id: "pin_terminal_mis", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul Pin terminal di ER" }
+        ]
+    },
+    sil_02: {
+        id: "sil_02",
+        name: "SIL 02",
+        sectionId: "section8",
+        questions: [
+            { id: "plc", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul PLC" },
+            { id: "remote_io", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul Remote I/O" },
+            { id: "io_logic", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul I/O Logic" },
+            { id: "relay_sil", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul Relay" },
+            { id: "pin_terminal_sil", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul Pin Terminal di ER" },
+            { id: "data_logger_sil", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul Data Logger" },
+            { id: "lcp_sil", text: "Seberapa paham anda terkait fungsi dan prinsip kerja modul LCP" }
+        ]
+    },
+    // Data untuk peralatan lainnya (disingkat untuk contoh)
+    sil_02_next_g: {
+        id: "sil_02_next_g",
+        name: "SIL 02 Next G",
+        sectionId: "section10",
+        questions: [
+            { id: "x_sb01", text: "Seberapa paham anda terkait Fungsi dan prinsip kerja modul X-SB01" },
+            { id: "x_cpu", text: "Seberapa paham anda terkait Fungsi dan prinsip kerja modul X CPU" },
+            { id: "x_com", text: "Seberapa paham anda terkait Fungsi dan prinsip kerja modul X COM" }
+        ]
+    },
+    vpi: {
+        id: "vpi",
+        name: "VPI",
+        sectionId: "section12",
+        questions: [
+            { id: "cpu_pd", text: "Seberapa paham anda terkait Fungsi dan prinsip kerja modul CPU/PD" },
+            { id: "vrd", text: "Seberapa paham anda terkait Fungsi dan prinsip kerja modul VRD" },
+            { id: "io_bus", text: "Seberapa paham anda terkait Fungsi dan prinsip kerja modul I/O BUS" }
+        ]
+    },
+    // Dan seterusnya untuk semua peralatan...
+};
+
+// State aplikasi
+const appState = {
+    currentSection: 1,
+    totalSections: 85,
+    selectedEquipment: new Set(['administrasi', 'lain_lain']), // Default wajib
+    formData: {},
+    sections: [
+        { id: "section1", title: "Profil Pribadi", required: true },
+        { id: "section2", title: "Profil Jabatan", required: true },
+        { id: "section3", title: "Pemilihan Peralatan", required: true }
+    ]
+};
+
+// Inisialisasi aplikasi
+document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
+    setupEventListeners();
+    renderSectionList();
+    updateProgress();
+});
+
+function initializeApp() {
+    // Tambahkan section dinamis berdasarkan peralatan
+    Object.values(equipmentData).forEach(equipment => {
+        appState.sections.push({
+            id: equipment.sectionId,
+            title: equipment.name,
+            required: false,
+            equipmentId: equipment.id
+        });
+    });
+    
+    // Tambahkan section administrasi dan lain-lain
+    appState.sections.push(
+        { id: "section84", title: "Administrasi", required: true },
+        { id: "section85", title: "Lain-lain", required: true }
+    );
+    
+    // Tampilkan section pertama
+    showSection(1);
+}
+
+function setupEventListeners() {
+    // Navigasi tombol
+    document.getElementById('prevBtn').addEventListener('click', goToPreviousSection);
+    document.getElementById('nextBtn').addEventListener('click', goToNextSection);
+    
+    // Tombol sidebar
+    document.getElementById('jumpToEquipment').addEventListener('click', () => showSection(3));
+    document.getElementById('showSummary').addEventListener('click', showSummary);
+    
+    // Tombol submit
+    document.getElementById('submitForm').addEventListener('click', submitForm);
+    document.getElementById('printSummary').addEventListener('click', printSummary);
+    
+    // Modal
+    document.querySelector('.close-modal').addEventListener('click', closeModal);
+    document.getElementById('closeSummary').addEventListener('click', closeModal);
+    document.getElementById('exportSummary').addEventListener('click', exportToPDF);
+    
+    // Checkbox peralatan - untuk menampilkan/sembunyikan section dinamis
+    document.querySelectorAll('input[name="peralatan[]"]').forEach(checkbox => {
+        checkbox.addEventListener('change', handleEquipmentSelection);
+    });
+    
+    // Klik di luar modal untuk menutup
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('summaryModal');
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            goToPreviousSection();
+        } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            goToNextSection();
+        }
+    });
+}
+
+function handleEquipmentSelection(e) {
+    const checkbox = e.target;
+    const equipmentId = checkbox.value;
+    const sectionId = checkbox.dataset.section;
+    
+    if (checkbox.checked) {
+        appState.selectedEquipment.add(equipmentId);
+        
+        // Buat section dinamis untuk peralatan ini jika belum ada
+        if (equipmentData[equipmentId] && !document.getElementById(sectionId)) {
+            createDynamicSection(equipmentData[equipmentId]);
+        }
+    } else {
+        appState.selectedEquipment.delete(equipmentId);
+    }
+    
+    // Update section list
+    renderSectionList();
+    updateProgress();
+}
+
+function createDynamicSection(equipment) {
+    const dynamicSections = document.getElementById('dynamicSections');
+    
+    // Section pertanyaan konfirmasi
+    const confirmSection = document.createElement('section');
+    confirmSection.id = equipment.sectionId;
+    confirmSection.className = 'form-section';
+    
+    const confirmSectionNumber = parseInt(equipment.sectionId.replace('section', '')) - 3;
+    
+    confirmSection.innerHTML = `
+        <div class="section-header">
+            <h2>Section ${confirmSectionNumber} dari 85</h2>
+            <h3>PDSE</h3>
+        </div>
+        
+        <div class="section-content">
+            <div class="form-group">
+                <h3>${equipment.name}</h3>
+                <p>Apakah Anda memiliki peralatan ${equipment.name}?</p>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="${equipment.id}_confirm" value="ya" required>
+                        <span class="radio-custom"></span>
+                        Ya
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="${equipment.id}_confirm" value="tidak" required>
+                        <span class="radio-custom"></span>
+                        Tidak
+                    </label>
                 </div>
-                <h1>FORM EVALUASI PENILAIAN TERHADAP PEGAWAI</h1>
-            </div>
-            
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="progress-text">
-                    <span id="currentSection">1</span> dari <span id="totalSections">85</span> Section
-                </div>
-            </div>
-            
-            <div class="nav-buttons">
-                <button id="prevBtn" class="nav-btn">
-                    <i class="fas fa-arrow-left"></i> Sebelumnya
-                </button>
-                <button id="nextBtn" class="nav-btn">
-                    Selanjutnya <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-        </header>
-
-        <!-- Main content area -->
-        <main>
-            <!-- Section navigator sidebar -->
-            <aside class="sidebar">
-                <h3><i class="fas fa-list-ol"></i> Daftar Section</h3>
-                <div class="section-list" id="sectionList">
-                    <!-- Section list will be populated by JavaScript -->
-                </div>
-                <div class="sidebar-footer">
-                    <button id="jumpToEquipment" class="sidebar-btn">
-                        <i class="fas fa-cogs"></i> Ke Pemilihan Peralatan
-                    </button>
-                    <button id="showSummary" class="sidebar-btn">
-                        <i class="fas fa-clipboard-check"></i> Ringkasan
-                    </button>
-                </div>
-            </aside>
-
-            <!-- Form sections -->
-            <div class="form-container">
-                <!-- Section 1: Profil Pribadi -->
-                <section id="section1" class="form-section active">
-                    <div class="section-header">
-                        <h2>Section 1 dari 85</h2>
-                        <h3>FORM EVALUASI PENILAIAN TERHADAP PEGAWAI</h3>
-                    </div>
-                    
-                    <div class="section-content">
-                        <div class="welcome-message">
-                            <p><i class="fas fa-handshake"></i> <strong>Yth. Bapak/Ibu Pegawai</strong></p>
-                            <p>Kami ingin melayani anda lebih baik, untuk itu mohon kesediaan peserta untuk memberikan penilaian dan komentar terhadap penyelenggaraan pelatihan ini.</p>
-                            <p class="thank-you">Terima kasih.</p>
-                        </div>
-                        
-                        <div class="form-group">
-                            <h3><i class="fas fa-user"></i> PROFIL PRIBADI</h3>
-                            <p class="description">(optional)</p>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="nama">NAMA LENGKAP <span class="required">*</span></label>
-                            <input type="text" id="nama" name="nama" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="nipp">NIPP <span class="required">*</span></label>
-                            <input type="text" id="nipp" name="nipp" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Jenis Kelamin <span class="required">*</span></label>
-                            <div class="radio-group">
-                                <label class="radio-label">
-                                    <input type="radio" name="jenis_kelamin" value="Laki-laki" required>
-                                    <span class="radio-custom"></span>
-                                    Laki-laki
-                                </label>
-                                <label class="radio-label">
-                                    <input type="radio" name="jenis_kelamin" value="Perempuan" required>
-                                    <span class="radio-custom"></span>
-                                    Perempuan
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Section 2: Profil Jabatan -->
-                <section id="section2" class="form-section">
-                    <div class="section-header">
-                        <h2>Section 2 dari 85</h2>
-                        <h3>PROFIL JABATAN</h3>
-                    </div>
-                    
-                    <div class="section-content">
-                        <div class="form-group">
-                            <h3><i class="fas fa-briefcase"></i> PROFIL JABATAN</h3>
-                            <p class="description">(optional)</p>
-                            <p>Silakan isi informasi mengenai jabatan Anda saat ini.</p>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="jabatan">Jabatan Saat Ini</label>
-                            <input type="text" id="jabatan" name="jabatan">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="unit_kerja">Unit Kerja / UPT</label>
-                            <input type="text" id="unit_kerja" name="unit_kerja">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="lokasi_kerja">Lokasi Kerja</label>
-                            <input type="text" id="lokasi_kerja" name="lokasi_kerja">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="pengalaman">Pengalaman Kerja (tahun)</label>
-                            <input type="number" id="pengalaman" name="pengalaman" min="0" max="50">
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Section 3: Pemilihan Peralatan -->
-                <section id="section3" class="form-section">
-                    <div class="section-header">
-                        <h2>Section 3 dari 85</h2>
-                        <h3>Pemilihan Peralatan Persinyalan yang Dikuasai</h3>
-                    </div>
-                    
-                    <div class="section-content">
-                        <div class="info-box">
-                            <p><i class="fas fa-info-circle"></i> Silakan pilih peralatan yang Anda miliki / kuasai.</p>
-                            <p>Pertanyaan evaluasi akan muncul sesuai pilihan Anda.</p>
-                        </div>
-                        
-                        <div class="form-group">
-                            <h3><i class="fas fa-cogs"></i> Peralatan persinyalan yang Anda kuasai</h3>
-                            
-                            <div class="equipment-selection">
-                                <h4>II. PDSE (Peralatan Dalam Sinyal Elektrik)</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="westrace_mk1" data-section="section4">
-                                        <span class="checkbox-custom"></span>
-                                        A. Westrace MK I
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="mis_801" data-section="section6">
-                                        <span class="checkbox-custom"></span>
-                                        B. MIS 801
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="sil_02" data-section="section8">
-                                        <span class="checkbox-custom"></span>
-                                        C. SIL 02
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="sil_02_next_g" data-section="section10">
-                                        <span class="checkbox-custom"></span>
-                                        D. SIL 02 Next G
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="vpi" data-section="section12">
-                                        <span class="checkbox-custom"></span>
-                                        E. VPI
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="elixs" data-section="section14">
-                                        <span class="checkbox-custom"></span>
-                                        F. ELIXS
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="ssi" data-section="section16">
-                                        <span class="checkbox-custom"></span>
-                                        G. SSI
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="westrace_mk2" data-section="section18">
-                                        <span class="checkbox-custom"></span>
-                                        H. Westrace MK II
-                                    </label>
-                                </div>
-                                
-                                <h4>III. Motor Wesel</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="bsg_9" data-section="section20">
-                                        <span class="checkbox-custom"></span>
-                                        A. BSG-9
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="s_90" data-section="section22">
-                                        <span class="checkbox-custom"></span>
-                                        B. S-90
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="nse" data-section="section24">
-                                        <span class="checkbox-custom"></span>
-                                        C. NSE
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="t84m" data-section="section26">
-                                        <span class="checkbox-custom"></span>
-                                        D. T84M
-                                    </label>
-                                </div>
-                                
-                                <h4>IV. Sinyal</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="sil_02_sinyal" data-section="section28">
-                                        <span class="checkbox-custom"></span>
-                                        A. SIL-02
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="mis_801_sinyal" data-section="section30">
-                                        <span class="checkbox-custom"></span>
-                                        B. MIS 801
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="westrace_sinyal" data-section="section32">
-                                        <span class="checkbox-custom"></span>
-                                        C. Westrace
-                                    </label>
-                                </div>
-                                
-                                <h4>V. Pendeteksi KA</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="altpro" data-section="section34">
-                                        <span class="checkbox-custom"></span>
-                                        A. Altpro
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="siemens" data-section="section36">
-                                        <span class="checkbox-custom"></span>
-                                        B. Siemens
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="frauscher" data-section="section38">
-                                        <span class="checkbox-custom"></span>
-                                        C. Frauscher
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="thales" data-section="section40">
-                                        <span class="checkbox-custom"></span>
-                                        D. Thales
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="track_circuit" data-section="section42">
-                                        <span class="checkbox-custom"></span>
-                                        E. Track Circuit
-                                    </label>
-                                </div>
-                                
-                                <h4>VI. Catu Daya</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="westrace_catu" data-section="section44">
-                                        <span class="checkbox-custom"></span>
-                                        A. Westrace
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="mis_801_catu" data-section="section46">
-                                        <span class="checkbox-custom"></span>
-                                        B. MIS 801
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="sil_02_catu" data-section="section48">
-                                        <span class="checkbox-custom"></span>
-                                        C. SIL 02
-                                    </label>
-                                </div>
-                                
-                                <h4>VII. Listrik Aliran Atas</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="jaringan_laa" data-section="section50">
-                                        <span class="checkbox-custom"></span>
-                                        A. Jaringan LAA
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="gardu_traksi" data-section="section52">
-                                        <span class="checkbox-custom"></span>
-                                        B. Gardu Traksi
-                                    </label>
-                                </div>
-                                
-                                <h4>VIII. Pintu Perlintasan</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="jpl_semi" data-section="section54">
-                                        <span class="checkbox-custom"></span>
-                                        A. JPL Semi Automatic
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="jpl_hg" data-section="section56">
-                                        <span class="checkbox-custom"></span>
-                                        B. JPL HG (Hand Generator)
-                                    </label>
-                                </div>
-                                
-                                <h4>IX. Telekomunikasi</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="central_radio" data-section="section58">
-                                        <span class="checkbox-custom"></span>
-                                        A. Central Radio
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="radio_lokomotif" data-section="section60">
-                                        <span class="checkbox-custom"></span>
-                                        B. Radio Lokomotif
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="waystation" data-section="section62">
-                                        <span class="checkbox-custom"></span>
-                                        C. Waystation
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="pk" data-section="section64">
-                                        <span class="checkbox-custom"></span>
-                                        D. Peralatan PK
-                                    </label>
-                                </div>
-                                
-                                <h4>X. Sinyal Mekanik</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="pdsm" data-section="section66">
-                                        <span class="checkbox-custom"></span>
-                                        A. PDSM
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="sistem_blok" data-section="section68">
-                                        <span class="checkbox-custom"></span>
-                                        B. Sistem Blok
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="sistem_blok_tbi" data-section="section70">
-                                        <span class="checkbox-custom"></span>
-                                        C. Sistem Blok TBI
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="wesel_mekanik" data-section="section72">
-                                        <span class="checkbox-custom"></span>
-                                        D. Wesel Mekanik
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="sinyal_mekanik" data-section="section74">
-                                        <span class="checkbox-custom"></span>
-                                        E. Sinyal
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="saluran_kawat" data-section="section76">
-                                        <span class="checkbox-custom"></span>
-                                        F. Saluran Kawat
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="pendeteksi_ka_mekanik" data-section="section78">
-                                        <span class="checkbox-custom"></span>
-                                        G. Pendeteksi KA
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="catu_daya_mekanik" data-section="section80">
-                                        <span class="checkbox-custom"></span>
-                                        H. Catu Daya
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="telekomunikasi_mekanik" data-section="section82">
-                                        <span class="checkbox-custom"></span>
-                                        I. Telekomunikasi
-                                    </label>
-                                </div>
-                                
-                                <h4>XI. Administrasi</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="administrasi" data-section="section84" checked>
-                                        <span class="checkbox-custom"></span>
-                                        Administrasi (Wajib)
-                                    </label>
-                                </div>
-                                
-                                <h4>XII. Lain-lain</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="peralatan[]" value="lain_lain" data-section="section85" checked>
-                                        <span class="checkbox-custom"></span>
-                                        Lain-lain (Wajib)
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="info-box">
-                            <p><i class="fas fa-lightbulb"></i> <strong>Tips:</strong> Hanya pilih peralatan yang benar-benar Anda kuasai. Pertanyaan akan muncul sesuai pilihan Anda.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Dynamic sections will be inserted here -->
-                <div id="dynamicSections"></div>
-
-                <!-- Section 84: Administrasi -->
-                <section id="section84" class="form-section">
-                    <div class="section-header">
-                        <h2>Section 84 dari 85</h2>
-                        <h3>Administrasi</h3>
-                    </div>
-                    
-                    <div class="section-content">
-                        <div class="form-group">
-                            <h3><i class="fas fa-file-alt"></i> Administrasi</h3>
-                            <p class="description">(optional)</p>
-                        </div>
-                        
-                        <div class="rating-question">
-                            <label>Memahami membuat RAB</label>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Sangat kurang</span>
-                                    <div class="rating-options">
-                                        <label><input type="radio" name="rab" value="1"> 1</label>
-                                        <label><input type="radio" name="rab" value="2"> 2</label>
-                                        <label><input type="radio" name="rab" value="3"> 3</label>
-                                        <label><input type="radio" name="rab" value="4"> 4</label>
-                                        <label><input type="radio" name="rab" value="5"> 5</label>
-                                        <label><input type="radio" name="rab" value="6"> 6</label>
-                                        <label><input type="radio" name="rab" value="7"> 7</label>
-                                        <label><input type="radio" name="rab" value="8"> 8</label>
-                                        <label><input type="radio" name="rab" value="9"> 9</label>
-                                        <label><input type="radio" name="rab" value="10"> 10</label>
-                                    </div>
-                                    <span>Sangat Baik</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="rating-question">
-                            <label>Memahami membuat Nota Dinas</label>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Sangat kurang</span>
-                                    <div class="rating-options">
-                                        <label><input type="radio" name="nota_dinas" value="1"> 1</label>
-                                        <label><input type="radio" name="nota_dinas" value="2"> 2</label>
-                                        <label><input type="radio" name="nota_dinas" value="3"> 3</label>
-                                        <label><input type="radio" name="nota_dinas" value="4"> 4</label>
-                                        <label><input type="radio" name="nota_dinas" value="5"> 5</label>
-                                        <label><input type="radio" name="nota_dinas" value="6"> 6</label>
-                                        <label><input type="radio" name="nota_dinas" value="7"> 7</label>
-                                        <label><input type="radio" name="nota_dinas" value="8"> 8</label>
-                                        <label><input type="radio" name="nota_dinas" value="9"> 9</label>
-                                        <label><input type="radio" name="nota_dinas" value="10"> 10</label>
-                                    </div>
-                                    <span>Sangat Baik</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="rating-question">
-                            <label>Memahami pengelolaan dokumen</label>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Sangat kurang</span>
-                                    <div class="rating-options">
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="1"> 1</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="2"> 2</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="3"> 3</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="4"> 4</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="5"> 5</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="6"> 6</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="7"> 7</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="8"> 8</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="9"> 9</label>
-                                        <label><input type="radio" name="pengelolaan_dokumen" value="10"> 10</label>
-                                    </div>
-                                    <span>Sangat Baik</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="rating-question">
-                            <label>Memahami SAP MM</label>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Sangat kurang</span>
-                                    <div class="rating-options">
-                                        <label><input type="radio" name="sap_mm" value="1"> 1</label>
-                                        <label><input type="radio" name="sap_mm" value="2"> 2</label>
-                                        <label><input type="radio" name="sap_mm" value="3"> 3</label>
-                                        <label><input type="radio" name="sap_mm" value="4"> 4</label>
-                                        <label><input type="radio" name="sap_mm" value="5"> 5</label>
-                                        <label><input type="radio" name="sap_mm" value="6"> 6</label>
-                                        <label><input type="radio" name="sap_mm" value="7"> 7</label>
-                                        <label><input type="radio" name="sap_mm" value="8"> 8</label>
-                                        <label><input type="radio" name="sap_mm" value="9"> 9</label>
-                                        <label><input type="radio" name="sap_mm" value="10"> 10</label>
-                                    </div>
-                                    <span>Sangat Baik</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="rating-question">
-                            <label>Memahami pemahaman alur kontrak pekerjaan atau pengadaan</label>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Sangat kurang</span>
-                                    <div class="rating-options">
-                                        <label><input type="radio" name="alur_kontrak" value="1"> 1</label>
-                                        <label><input type="radio" name="alur_kontrak" value="2"> 2</label>
-                                        <label><input type="radio" name="alur_kontrak" value="3"> 3</label>
-                                        <label><input type="radio" name="alur_kontrak" value="4"> 4</label>
-                                        <label><input type="radio" name="alur_kontrak" value="5"> 5</label>
-                                        <label><input type="radio" name="alur_kontrak" value="6"> 6</label>
-                                        <label><input type="radio" name="alur_kontrak" value="7"> 7</label>
-                                        <label><input type="radio" name="alur_kontrak" value="8"> 8</label>
-                                        <label><input type="radio" name="alur_kontrak" value="9"> 9</label>
-                                        <label><input type="radio" name="alur_kontrak" value="10"> 10</label>
-                                    </div>
-                                    <span>Sangat Baik</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Section 85: Lain-lain -->
-                <section id="section85" class="form-section">
-                    <div class="section-header">
-                        <h2>Section 85 dari 85</h2>
-                        <h3>Lain - lain</h3>
-                    </div>
-                    
-                    <div class="section-content">
-                        <div class="form-group">
-                            <h3><i class="fas fa-tools"></i> Cara Penggunaan Alat</h3>
-                        </div>
-                        
-                        <div class="rating-question">
-                            <label>Memahami cara menggunakan alat kerja AVO meter</label>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Sangat kurang</span>
-                                    <div class="rating-options">
-                                        <label><input type="radio" name="avo_meter" value="1"> 1</label>
-                                        <label><input type="radio" name="avo_meter" value="2"> 2</label>
-                                        <label><input type="radio" name="avo_meter" value="3"> 3</label>
-                                        <label><input type="radio" name="avo_meter" value="4"> 4</label>
-                                        <label><input type="radio" name="avo_meter" value="5"> 5</label>
-                                        <label><input type="radio" name="avo_meter" value="6"> 6</label>
-                                        <label><input type="radio" name="avo_meter" value="7"> 7</label>
-                                        <label><input type="radio" name="avo_meter" value="8"> 8</label>
-                                        <label><input type="radio" name="avo_meter" value="9"> 9</label>
-                                        <label><input type="radio" name="avo_meter" value="10"> 10</label>
-                                    </div>
-                                    <span>Sangat Baik</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="rating-question">
-                            <label>Memahami cara menggunakan alat kerja las listrik</label>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Sangat kurang</span>
-                                    <div class="rating-options">
-                                        <label><input type="radio" name="las_listrik" value="1"> 1</label>
-                                        <label><input type="radio" name="las_listrik" value="2"> 2</label>
-                                        <label><input type="radio" name="las_listrik" value="3"> 3</label>
-                                        <label><input type="radio" name="las_listrik" value="4"> 4</label>
-                                        <label><input type="radio" name="las_listrik" value="5"> 5</label>
-                                        <label><input type="radio" name="las_listrik" value="6"> 6</label>
-                                        <label><input type="radio" name="las_listrik" value="7"> 7</label>
-                                        <label><input type="radio" name="las_listrik" value="8"> 8</label>
-                                        <label><input type="radio" name="las_listrik" value="9"> 9</label>
-                                        <label><input type="radio" name="las_listrik" value="10"> 10</label>
-                                    </div>
-                                    <span>Sangat Baik</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="rating-question">
-                            <label>Memahami cara menggunakan alat kerja insulation tester</label>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Sangat kurang</span>
-                                    <div class="rating-options">
-                                        <label><input type="radio" name="insulation_tester" value="1"> 1</label>
-                                        <label><input type="radio" name="insulation_tester" value="2"> 2</label>
-                                        <label><input type="radio" name="insulation_tester" value="3"> 3</label>
-                                        <label><input type="radio" name="insulation_tester" value="4"> 4</label>
-                                        <label><input type="radio" name="insulation_tester" value="5"> 5</label>
-                                        <label><input type="radio" name="insulation_tester" value="6"> 6</label>
-                                        <label><input type="radio" name="insulation_tester" value="7"> 7</label>
-                                        <label><input type="radio" name="insulation_tester" value="8"> 8</label>
-                                        <label><input type="radio" name="insulation_tester" value="9"> 9</label>
-                                        <label><input type="radio" name="insulation_tester" value="10"> 10</label>
-                                    </div>
-                                    <span>Sangat Baik</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button id="submitForm" class="submit-btn">
-                                <i class="fas fa-paper-plane"></i> Kirim Evaluasi
-                            </button>
-                        </div>
-                        
-                        <div class="completion-message" id="completionMessage" style="display: none;">
-                            <div class="success-box">
-                                <i class="fas fa-check-circle"></i>
-                                <h3>Evaluasi Berhasil Dikirim!</h3>
-                                <p>Terima kasih atas partisipasi Anda dalam evaluasi ini. Data yang Anda berikan akan sangat berguna untuk pengembangan kompetensi pegawai.</p>
-                                <button id="printSummary" class="print-btn">
-                                    <i class="fas fa-print"></i> Cetak Ringkasan
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
-    </div>
-
-    <!-- Modal for summary -->
-    <div id="summaryModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-clipboard-check"></i> Ringkasan Evaluasi</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="summaryContent">
-                    <!-- Summary will be populated by JavaScript -->
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="closeSummary" class="modal-btn">Tutup</button>
-                <button id="exportSummary" class="modal-btn export">
-                    <i class="fas fa-download"></i> Ekspor ke PDF
-                </button>
             </div>
         </div>
-    </div>
+    `;
+    
+    dynamicSections.appendChild(confirmSection);
+    
+    // Section pertanyaan rating
+    const questionsSection = document.createElement('section');
+    questionsSection.id = `${equipment.sectionId}_questions`;
+    questionsSection.className = 'form-section';
+    
+    const questionsSectionNumber = confirmSectionNumber + 1;
+    
+    let questionsHTML = '';
+    equipment.questions.forEach((question, index) => {
+        questionsHTML += `
+            <div class="rating-question">
+                <label>${question.text}</label>
+                <div class="rating-container">
+                    <div class="rating-scale">
+                        <span>Sangat kurang</span>
+                        <div class="rating-options">
+                            ${Array.from({length: 10}, (_, i) => i + 1).map(num => `
+                                <label><input type="radio" name="${equipment.id}_${question.id}" value="${num}"> ${num}</label>
+                            `).join('')}
+                        </div>
+                        <span>Sangat Baik</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    questionsSection.innerHTML = `
+        <div class="section-header">
+            <h2>Section ${questionsSectionNumber} dari 85</h2>
+            <h3>Pemahaman terkait Peralatan ${equipment.name}</h3>
+        </div>
+        
+        <div class="section-content">
+            <div class="form-group">
+                <h3>Pemahaman terkait Peralatan ${equipment.name}</h3>
+                <p class="description">(optional)</p>
+            </div>
+            ${questionsHTML}
+        </div>
+    `;
+    
+    dynamicSections.appendChild(questionsSection);
+    
+    // Tambahkan ke daftar section
+    appState.sections.splice(confirmSectionNumber - 1, 0, {
+        id: equipment.sectionId,
+        title: `Konfirmasi ${equipment.name}`,
+        required: false,
+        equipmentId: equipment.id
+    });
+    
+    appState.sections.splice(confirmSectionNumber, 0, {
+        id: `${equipment.sectionId}_questions`,
+        title: `Pertanyaan ${equipment.name}`,
+        required: false,
+        equipmentId: equipment.id
+    });
+    
+    // Update total sections
+    appState.totalSections = appState.sections.length;
+    document.getElementById('totalSections').textContent = appState.totalSections;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+function showSection(sectionNumber) {
+    // Validasi input section
+    if (sectionNumber < 1 || sectionNumber > appState.totalSections) return;
+    
+    // Sembunyikan section aktif
+    document.querySelectorAll('.form-section.active').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Update section aktif di state
+    appState.currentSection = sectionNumber;
+    
+    // Tampilkan section yang dituju
+    const targetSection = appState.sections[sectionNumber - 1];
+    const sectionElement = document.getElementById(targetSection.id);
+    
+    if (sectionElement) {
+        sectionElement.classList.add('active');
+        
+        // Update UI
+        document.getElementById('currentSection').textContent = sectionNumber;
+        updateNavigationButtons();
+        updateProgress();
+        updateActiveSectionInList();
+        
+        // Scroll ke atas form
+        document.querySelector('.form-container').scrollTop = 0;
+    }
+}
+
+function goToPreviousSection() {
+    if (appState.currentSection > 1) {
+        // Validasi section saat ini sebelum pindah
+        if (validateCurrentSection()) {
+            showSection(appState.currentSection - 1);
+        }
+    }
+}
+
+function goToNextSection() {
+    if (appState.currentSection < appState.totalSections) {
+        // Validasi section saat ini sebelum pindah
+        if (validateCurrentSection()) {
+            showSection(appState.currentSection + 1);
+        }
+    }
+}
+
+function validateCurrentSection() {
+    const currentSection = appState.sections[appState.currentSection - 1];
+    const sectionElement = document.getElementById(currentSection.id);
+    
+    // Cek field required
+    const requiredInputs = sectionElement.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredInputs.forEach(input => {
+        if (!input.value && !input.checked) {
+            isValid = false;
+            // Highlight field yang error
+            input.style.borderColor = 'var(--danger-color)';
+            
+            // Tambahkan event untuk menghapus highlight saat diisi
+            const removeHighlight = () => {
+                input.style.borderColor = '';
+                input.removeEventListener('input', removeHighlight);
+                input.removeEventListener('change', removeHighlight);
+            };
+            
+            input.addEventListener('input', removeHighlight);
+            input.addEventListener('change', removeHighlight);
+        }
+    });
+    
+    if (!isValid) {
+        alert('Harap lengkapi semua field yang wajib diisi sebelum melanjutkan.');
+    }
+    
+    return isValid;
+}
+
+function updateNavigationButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    // Update tombol sebelumnya
+    prevBtn.disabled = appState.currentSection === 1;
+    
+    // Update tombol selanjutnya
+    if (appState.currentSection === appState.totalSections) {
+        nextBtn.style.display = 'none';
+    } else {
+        nextBtn.style.display = 'flex';
+    }
+}
+
+function updateProgress() {
+    const progressFill = document.getElementById('progressFill');
+    const progressPercentage = (appState.currentSection / appState.totalSections) * 100;
+    
+    progressFill.style.width = `${progressPercentage}%`;
+}
+
+function renderSectionList() {
+    const sectionList = document.getElementById('sectionList');
+    sectionList.innerHTML = '';
+    
+    appState.sections.forEach((section, index) => {
+        // Skip section yang tidak dipilih (kecuali yang required)
+        if (!section.required && section.equipmentId && !appState.selectedEquipment.has(section.equipmentId)) {
+            return;
+        }
+        
+        const sectionItem = document.createElement('div');
+        sectionItem.className = 'section-item';
+        
+        if (index + 1 === appState.currentSection) {
+            sectionItem.classList.add('active');
+        }
+        
+        // Tandai section yang sudah diisi
+        const isCompleted = checkSectionCompletion(index + 1);
+        if (isCompleted) {
+            sectionItem.classList.add('completed');
+        }
+        
+        sectionItem.innerHTML = `
+            <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-circle'}"></i>
+            <span>${index + 1}. ${section.title}</span>
+        `;
+        
+        sectionItem.addEventListener('click', () => {
+            if (validateCurrentSection()) {
+                showSection(index + 1);
+            }
+        });
+        
+        sectionList.appendChild(sectionItem);
+    });
+}
+
+function updateActiveSectionInList() {
+    document.querySelectorAll('.section-item').forEach((item, index) => {
+        item.classList.remove('active');
+        
+        // Cari index yang sesuai dengan section saat ini
+        let currentIndex = 0;
+        for (let i = 0; i < appState.sections.length; i++) {
+            const section = appState.sections[i];
+            if (!section.required && section.equipmentId && !appState.selectedEquipment.has(section.equipmentId)) {
+                continue;
+            }
+            
+            if (i === appState.currentSection - 1) {
+                currentIndex = index;
+                break;
+            }
+        }
+        
+        if (index === currentIndex) {
+            item.classList.add('active');
+        }
+    });
+}
+
+function checkSectionCompletion(sectionNumber) {
+    // Untuk sederhana, kita anggap section sudah selesai jika sudah dikunjungi
+    return sectionNumber < appState.currentSection;
+}
+
+function collectFormData() {
+    const formData = {};
+    
+    // Data profil
+    formData.nama = document.getElementById('nama').value;
+    formData.nipp = document.getElementById('nipp').value;
+    formData.jenis_kelamin = document.querySelector('input[name="jenis_kelamin"]:checked')?.value;
+    formData.jabatan = document.getElementById('jabatan').value;
+    formData.unit_kerja = document.getElementById('unit_kerja').value;
+    formData.lokasi_kerja = document.getElementById('lokasi_kerja').value;
+    formData.pengalaman = document.getElementById('pengalaman').value;
+    
+    // Data peralatan yang dipilih
+    formData.peralatan = Array.from(appState.selectedEquipment);
+    
+    // Data rating untuk peralatan yang dipilih
+    formData.ratings = {};
+    
+    appState.selectedEquipment.forEach(equipmentId => {
+        if (equipmentData[equipmentId]) {
+            formData.ratings[equipmentId] = {};
+            
+            equipmentData[equipmentId].questions.forEach(question => {
+                const radio = document.querySelector(`input[name="${equipmentId}_${question.id}"]:checked`);
+                if (radio) {
+                    formData.ratings[equipmentId][question.id] = radio.value;
+                }
+            });
+        }
+    });
+    
+    // Data administrasi
+    const adminFields = ['rab', 'nota_dinas', 'pengelolaan_dokumen', 'sap_mm', 'alur_kontrak'];
+    formData.administrasi = {};
+    
+    adminFields.forEach(field => {
+        const radio = document.querySelector(`input[name="${field}"]:checked`);
+        if (radio) {
+            formData.administrasi[field] = radio.value;
+        }
+    });
+    
+    // Data lain-lain
+    const otherFields = ['avo_meter', 'las_listrik', 'insulation_tester'];
+    formData.lain_lain = {};
+    
+    otherFields.forEach(field => {
+        const radio = document.querySelector(`input[name="${field}"]:checked`);
+        if (radio) {
+            formData.lain_lain[field] = radio.value;
+        }
+    });
+    
+    return formData;
+}
+
+function submitForm() {
+    // Validasi semua section
+    for (let i = 1; i <= appState.totalSections; i++) {
+        const section = appState.sections[i - 1];
+        
+        // Skip section yang tidak dipilih
+        if (!section.required && section.equipmentId && !appState.selectedEquipment.has(section.equipmentId)) {
+            continue;
+        }
+        
+        const sectionElement = document.getElementById(section.id);
+        if (!sectionElement) continue;
+        
+        const requiredInputs = sectionElement.querySelectorAll('[required]');
+        for (const input of requiredInputs) {
+            if (!input.value && !input.checked) {
+                showSection(i);
+                alert(`Harap lengkapi semua field yang wajib diisi di section "${section.title}"`);
+                return;
+            }
+        }
+    }
+    
+    // Kumpulkan data
+    appState.formData = collectFormData();
+    
+    // Simpan ke localStorage (simulasi pengiriman data)
+    localStorage.setItem('employeeEvaluationData', JSON.stringify(appState.formData));
+    
+    // Tampilkan pesan sukses
+    document.getElementById('completionMessage').style.display = 'block';
+    document.getElementById('submitForm').style.display = 'none';
+    
+    // Scroll ke pesan sukses
+    document.getElementById('completionMessage').scrollIntoView({ behavior: 'smooth' });
+    
+    console.log('Data evaluasi berhasil dikumpulkan:', appState.formData);
+}
+
+function showSummary() {
+    // Kumpulkan data terbaru
+    appState.formData = collectFormData();
+    
+    const modal = document.getElementById('summaryModal');
+    const summaryContent = document.getElementById('summaryContent');
+    
+    // Buat ringkasan
+    let summaryHTML = `
+        <div class="summary-section">
+            <h4><i class="fas fa-user"></i> Profil Pribadi</h4>
+            <div class="summary-item">
+                <span class="label">Nama Lengkap:</span>
+                <span class="value">${appState.formData.nama || '-'}</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">NIPP:</span>
+                <span class="value">${appState.formData.nipp || '-'}</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Jenis Kelamin:</span>
+                <span class="value">${appState.formData.jenis_kelamin || '-'}</span>
+            </div>
+        </div>
+        
+        <div class="summary-section">
+            <h4><i class="fas fa-briefcase"></i> Profil Jabatan</h4>
+            <div class="summary-item">
+                <span class="label">Jabatan:</span>
+                <span class="value">${appState.formData.jabatan || '-'}</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Unit Kerja:</span>
+                <span class="value">${appState.formData.unit_kerja || '-'}</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Pengalaman Kerja:</span>
+                <span class="value">${appState.formData.pengalaman || '0'} tahun</span>
+            </div>
+        </div>
+        
+        <div class="summary-section">
+            <h4><i class="fas fa-cogs"></i> Peralatan yang Dikuasai</h4>
+    `;
+    
+    // Daftar peralatan
+    appState.selectedEquipment.forEach(equipmentId => {
+        let equipmentName = equipmentId;
+        
+        if (equipmentData[equipmentId]) {
+            equipmentName = equipmentData[equipmentId].name;
+        } else if (equipmentId === 'administrasi') {
+            equipmentName = 'Administrasi';
+        } else if (equipmentId === 'lain_lain') {
+            equipmentName = 'Lain-lain';
+        }
+        
+        summaryHTML += `
+            <div class="summary-item">
+                <span class="value">${equipmentName}</span>
+            </div>
+        `;
+    });
+    
+    summaryHTML += `</div>`;
+    
+    // Ringkasan rating
+    summaryHTML += `
+        <div class="summary-section">
+            <h4><i class="fas fa-chart-bar"></i> Rata-rata Rating</h4>
+    `;
+    
+    // Hitung rata-rata rating per peralatan
+    let totalRatings = 0;
+    let ratingCount = 0;
+    
+    Object.keys(appState.formData.ratings || {}).forEach(equipmentId => {
+        const ratings = appState.formData.ratings[equipmentId];
+        const values = Object.values(ratings).map(v => parseInt(v)).filter(v => !isNaN(v));
+        
+        if (values.length > 0) {
+            const avg = values.reduce((a, b) => a + b, 0) / values.length;
+            totalRatings += avg;
+            ratingCount++;
+            
+            const equipmentName = equipmentData[equipmentId]?.name || equipmentId;
+            summaryHTML += `
+                <div class="summary-item">
+                    <span class="label">${equipmentName}:</span>
+                    <span class="value">${avg.toFixed(1)} / 10</span>
+                </div>
+            `;
+        }
+    });
+    
+    // Rating administrasi
+    if (appState.formData.administrasi) {
+        const adminValues = Object.values(appState.formData.administrasi).map(v => parseInt(v)).filter(v => !isNaN(v));
+        if (adminValues.length > 0) {
+            const avg = adminValues.reduce((a, b) => a + b, 0) / adminValues.length;
+            totalRatings += avg;
+            ratingCount++;
+            
+            summaryHTML += `
+                <div class="summary-item">
+                    <span class="label">Administrasi:</span>
+                    <span class="value">${avg.toFixed(1)} / 10</span>
+                </div>
+            `;
+        }
+    }
+    
+    // Rating lain-lain
+    if (appState.formData.lain_lain) {
+        const otherValues = Object.values(appState.formData.lain_lain).map(v => parseInt(v)).filter(v => !isNaN(v));
+        if (otherValues.length > 0) {
+            const avg = otherValues.reduce((a, b) => a + b, 0) / otherValues.length;
+            totalRatings += avg;
+            ratingCount++;
+            
+            summaryHTML += `
+                <div class="summary-item">
+                    <span class="label">Lain-lain:</span>
+                    <span class="value">${avg.toFixed(1)} / 10</span>
+                </div>
+            `;
+        }
+    }
+    
+    // Rata-rata keseluruhan
+    if (ratingCount > 0) {
+        const overallAvg = totalRatings / ratingCount;
+        summaryHTML += `
+            <div class="summary-item" style="border-top: 2px solid var(--primary-color); padding-top: 10px; margin-top: 10px;">
+                <span class="label" style="font-weight: 600;">Rata-rata Keseluruhan:</span>
+                <span class="value" style="font-weight: 600; color: var(--primary-color);">${overallAvg.toFixed(1)} / 10</span>
+            </div>
+        `;
+    }
+    
+    summaryHTML += `</div>`;
+    
+    summaryContent.innerHTML = summaryHTML;
+    modal.style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('summaryModal').style.display = 'none';
+}
+
+function printSummary() {
+    // Membuka jendela baru untuk mencetak
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Ringkasan Evaluasi Pegawai</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    h1 { color: #1a365d; border-bottom: 2px solid #1a365d; padding-bottom: 10px; }
+                    .section { margin-bottom: 20px; }
+                    .item { display: flex; justify-content: space-between; margin-bottom: 5px; }
+                    .label { font-weight: bold; }
+                    .total { border-top: 2px solid #333; padding-top: 10px; margin-top: 10px; }
+                    @media print {
+                        body { font-size: 12pt; }
+                        .no-print { display: none; }
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Ringkasan Evaluasi Pegawai</h1>
+                <div class="section">
+                    <h2>Profil Pribadi</h2>
+                    <div class="item"><span class="label">Nama:</span> <span>${appState.formData.nama || '-'}</span></div>
+                    <div class="item"><span class="label">NIPP:</span> <span>${appState.formData.nipp || '-'}</span></div>
+                    <div class="item"><span class="label">Jenis Kelamin:</span> <span>${appState.formData.jenis_kelamin || '-'}</span></div>
+                </div>
+                <div class="section">
+                    <h2>Peralatan yang Dikuasai</h2>
+                    ${Array.from(appState.selectedEquipment).map(eq => {
+                        let name = eq;
+                        if (equipmentData[eq]) name = equipmentData[eq].name;
+                        if (eq === 'administrasi') name = 'Administrasi';
+                        if (eq === 'lain_lain') name = 'Lain-lain';
+                        return `<div>• ${name}</div>`;
+                    }).join('')}
+                </div>
+                <div class="section">
+                    <h2>Ringkasan Penilaian</h2>
+                    <p>Data evaluasi telah berhasil disimpan.</p>
+                    <p>Tanggal: ${new Date().toLocaleDateString('id-ID')}</p>
+                </div>
+                <button class="no-print" onclick="window.print()">Cetak</button>
+                <button class="no-print" onclick="window.close()">Tutup</button>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
+
+function exportToPDF() {
+    // Simulasi ekspor PDF
+    alert('Fitur ekspor ke PDF akan mengunduh file ringkasan evaluasi. (Fitur ini memerlukan library eksternal seperti jsPDF)');
+    
+    // Dalam implementasi nyata, Anda bisa menggunakan library seperti:
+    // 1. jsPDF (https://github.com/parallax/jsPDF)
+    // 2. html2pdf.js (https://github.com/eKoopmans/html2pdf.js)
+    
+    // Contoh sederhana:
+    // const { jsPDF } = window.jspdf;
+    // const doc = new jsPDF();
+    // doc.text("Ringkasan Evaluasi Pegawai", 10, 10);
+    // doc.save("evaluasi-pegawai.pdf");
+}
