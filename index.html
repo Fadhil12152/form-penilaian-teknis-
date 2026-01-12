@@ -13,7 +13,7 @@
             
             <div class="form-card header-card">
                 <h1>BUKU PENILAIAN PEGAWAI SINTELIS</h1>
-                <p>Formulir evaluasi kompetensi teknis terhadap peralatan dan prosedur kerja.</p>
+                <p>Formulir evaluasi kompetensi teknis terhadap peralatan dan prosedur kerja[cite: 9, 10].</p>
                 <hr>
                 <p class="required-text">* Menunjukkan pertanyaan yang wajib diisi</p>
             </div>
@@ -22,18 +22,18 @@
                 <h3>PROFIL PRIBADI</h3>
                 <div class="input-field">
                     <label>NAMA LENGKAP *</label>
-                    <input type="text" id="name" placeholder="Nama Anda" required>
+                    <input type="text" id="name" placeholder="Nama Lengkap" required>
                 </div>
                 <div class="input-field">
                     <label>NIPP *</label>
-                    <input type="text" id="nipp" placeholder="NIPP Anda" required>
+                    <input type="text" id="nipp" placeholder="Masukkan NIPP" required>
                 </div>
                 <div class="input-field">
                     <label>Jenis Kelamin *</label>
                     <select id="gender" required>
                         <option value="">Pilih</option>
-                        <option value="Pria">Pria</option>
-                        <option value="Wanita">Wanita</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
                     </select>
                 </div>
                 <div class="input-field">
@@ -45,35 +45,33 @@
                         <option value="Daop 2 Bandung">Daop 2 Bandung</option>
                         <option value="Daop 3 Cirebon">Daop 3 Cirebon</option>
                         <option value="Divre I Sumatera Utara">Divre I Sumatera Utara</option>
-                        <option value="LRT Jabodebek">LRT Jabodebek</option>
-                    </select>
+                        </select>
                 </div>
                 <div class="input-field">
                     <label>Jabatan *</label>
                     <select id="position" required>
                         <option value="">Pilih Jabatan</option>
                         <option value="Pelaksana">Pelaksana</option>
-                        <option value="Petugas Negatif Cek">Petugas Negatif Cek</option>
+                        <option value="Petugas Negative Check">Petugas Negative Check</option>
                         <option value="Kepala UPT Resor">Kepala UPT Resor</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-card">
-                <h3 class="category-title">(I) ITCS-MS (SOP Perawatan) *</h3>
-                <p style="font-size: 0.85em; margin-bottom: 20px;">Pilih sesuai peralatan yang ada di daerah masing-masing.</p>
+                <h3 class="category-title">(I) ITCS-MS (Wajib diisi) *</h3>
+                <p style="font-size: 0.85em; margin-bottom: 20px;">Memahami SOP perawatan sesuai ITCS-MS.</p>
                 <div id="mandatoryITCSArea"></div>
             </div>
 
             <div class="form-card">
                 <h3>PILIH KATEGORI PERALATAN TAMBAHAN</h3>
-                <div id="filterGrid" class="filter-grid">
-                    </div>
+                <p style="font-size: 0.85em;">Centang kategori di bawah untuk memunculkan modul penilaian spesifik.</p>
+                <div id="filterGrid" class="filter-grid"></div>
             </div>
 
             <form id="assessmentForm">
                 <div id="dynamicQuestionsWrapper"></div>
-                
                 <div class="form-footer">
                     <button type="submit" class="btn-primary">Kirim Penilaian</button>
                     <button type="button" class="btn-secondary" onclick="location.reload()">Clear form</button>
