@@ -1,5 +1,5 @@
-// 1. DATA WAJIB (ITCS-MS) - 29 Pertanyaan 
-const mandatoryITCS = [
+// Data ITCS-MS (Wajib - Grid 5 Pilihan sesuai Gambar)
+const itcsItems = [
     "Perawatan PDSM", "Perawatan Peraga Sinyal Mekanik", "Perawatan Wesel Mekanik",
     "Negative Check Persinyalan Mekanik", "Perawatan Saluran Kawat", "Perawatan Wesel Elektrik",
     "Perawatan PDSE", "Perawatan Peraga Sinyal Elektrik", "Perawatan Axle Counter",
@@ -7,52 +7,35 @@ const mandatoryITCS = [
     "Perawatan WLSE", "Perawatan Kontak Deteksi", "Perawatan Pintu Perlintasan",
     "Perawatan Catu Daya", "Perawatan Radio Lokomotif", "Peralatan Telkom di Stasiun",
     "Peralatan Telkom di Luar Stasiun", "Peralatan Telkom di Pintu Perlintasan",
-    "Perawatan Serat Optik", "Perawatan Saluran Blok (1 & 6 bln)", "Uji Fungsi LBD",
-    "Perawatan Bangunan E-House", "Perawatan Trafo Kering", "Trafo Location Case/Tiang",
+    "Perawatan Serat Optik", "Perawatan Saluran Blok 1 & 6 bln", "Uji Fungsi LBD",
+    "Perawatan Bangunan E-House", "Perawatan Trafo Kering", "Trafo Location Case & Trafo Tiang",
     "Perawatan Lightning Arrester", "Pemeriksaan Kabel Outgoing", "Pengetesan Relay Proteksi DC"
 ];
 
-// 2. DATA TAMBAHAN (Sesuai Struktur Dokumen) 
 const additionalEquip = {
-    "pdse_westrace_1": {
+    "westrace_mk1": {
         title: "(II.A) PDSE - Westrace MK I",
-        items: ["Modul HVLM", "Modul Vpim", "Modul Vrom", "Modul SOF", "Modul NCDC", "Modul LCP", "Pin terminal di ER"]
+        items: ["modul HVLM", "modul VPIM", "modul Vrom", "modul SOF", "modul NCDC", "modul LCP", "pin terminal di ER"]
     },
-    "pdse_mis801": {
+    "mis801": {
         title: "(II.B) PDSE - MIS 801",
-        items: ["Modul ZRE", "Modul ZRI", "Modul RE", "Modul RI", "Modul R", "Modul SWH", "Modul SWHW", "Modul Data Logger", "Modul LCP"]
+        items: ["modul ZRE", "modul ZRI", "modul RE", "modul RI", "modul R", "modul SWH", "modul SWHW", "modul SWZH", "modul SAH", "modul SWR", "modul SWVF", "modul WF", "modul WAD", "modul DW", "modul GA", "modul FRM", "modul FRB", "modul FL", "modul SCHL", "modul LCP", "modul Data Logger", "Pin terminal di ER"]
     },
-    "pdse_sil02": {
+    "sil02": {
         title: "(II.C) PDSE - SIL 02",
-        items: ["Modul PLC", "Remote I/O", "I/O Logic", "Relay", "Pin terminal di ER", "Data Logger", "LCP"]
+        items: ["modul PLC", "modul Remote I/O", "modul I/O Logic", "modul Relay", "Pin Terminal di ER", "modul Data Logger", "modul LCP"]
     },
-    "pdse_sil02_nextg": {
+    "sil02_nextg": {
         title: "(II.D) PDSE - SIL 02 Next G",
-        items: ["Modul X-SB01", "Modul X-CPU", "Modul X-COM", "Modul X-DI", "Modul X-DO", "Himatrix F1/F2/F3", "LCP/VDU", "Data Logger"]
+        items: ["modul X-SB01", "modul X CPU", "modul X COM", "modul X-DI", "modul X-DO", "modul Himatrix FI DI", "modul Himatrix F2 DO", "modul Himatrix F3O", "modul Himatrix F3 DIO", "modul Relay", "modul LCP/VDU", "Pin terminal di ER", "modul Data Logger"]
     },
-    "pdse_vpi": {
-        title: "(II.E/F) PDSE - VPI / ELIXS",
-        items: ["CPU/PD", "VRD", "I/O Bus", "SBO", "VPM", "CPS", "UCI", "Data Logger", "VDU"]
+    "vpi_elixs_ssi": {
+        title: "(II.E-G) VPI / Elixs / SSI",
+        items: ["CPU/PD", "VRD", "I/O BUS", "VPM", "CPS", "MPM", "DLM", "TFM", "Technician Terminal"]
     },
     "motor_wesel": {
-        title: "(III) Motor Wesel",
-        items: ["BSG-9 (Komponen & Wiring)", "S-90 (Komponen & Wiring)", "NSE (Komponen & Wiring)", "T84M (Komponen & Wiring)"]
-    },
-    "sinyal": {
-        title: "(IV) Sinyal",
-        items: ["Sil-02 (Box Sinyal & Terminal)", "MIS-801 (Box Sinyal & Terminal)", "Westrace (Box Sinyal & Terminal)"]
-    },
-    "detect": {
-        title: "(V) Pendeteksi KA",
-        items: ["Altpro (Head Sensor, MPU, Zanap)", "Siemens (Wde, Generator, Steu)", "Frauscher (Wheel Sensor, GAK, AEB)", "Thales (EAK, CPU, Power Supply)", "Track Circuit"]
-    },
-    "catu_daya": {
-        title: "(VI) Catu Daya",
-        items: ["WESTRACE (UPS, Genset, Batere)", "MIS 801 (UPS, Genset, Batere)", "SIL 02 (UPS, Genset, Batere)"]
-    },
-    "admin": {
-        title: "(XI) Administrasi",
-        items: ["Membuat RAB", "Membuat Nota Dinas", "SAP MM / SAP-LAM", "Membuat/MenTeco WO", "Pelaporan SRI"]
+        title: "(III) Motor Wesel (BSG-9, S-90, NSE, T84M)",
+        items: ["Komponen dalam", "Fungsi komponen", "Wiring", "Terminal pin"]
     }
 };
 
@@ -60,31 +43,29 @@ const mandatoryArea = document.getElementById('mandatoryITCSArea');
 const filterGrid = document.getElementById('filterGrid');
 const dynamicWrapper = document.getElementById('dynamicQuestionsWrapper');
 
-// Render Fungsi Skala 1-10
-function generateRadios(cat, qIdx) {
-    let radios = '';
+function generateScale10(cat, idx) {
+    let html = `<div class="scale-container"><span class="extreme-label">Sangat Kurang</span>`;
     for (let i = 1; i <= 10; i++) {
-        radios += `<div class="scale-option"><span>${i}</span><input type="radio" name="${cat}_${qIdx}" value="${i}" required></div>`;
+        html += `<div class="scale-option"><span>${i}</span><input type="radio" name="${cat}_${idx}" value="${i}" required></div>`;
     }
-    return radios;
+    html += `<span class="extreme-label">Sangat Baik</span></div>`;
+    return html;
 }
 
-// 1. Render ITCS-MS (Wajib)
-mandatoryITCS.forEach((item, idx) => {
-    const div = document.createElement('div');
-    div.className = 'question-item';
-    div.innerHTML = `
-        <label>${idx + 1}. Memahami prosedur: <strong>${item}</strong>? *</label>
-        <div class="scale-container">
-            <span class="extreme-label">Sangat Kurang</span>
-            ${generateRadios('itcs', idx)}
-            <span class="extreme-label">Sangat Baik</span>
-        </div>
-    `;
-    mandatoryArea.appendChild(div);
-});
+// Render ITCS-MS (Wajib - Menggunakan Skala 5 sesuai Gambar e66bec)
+function renderMandatory() {
+    let html = `<div class="grid-5-row"><div></div><div class="grid-header">Sangat Kurang</div><div class="grid-header">Kurang</div><div class="grid-header">Cukup</div><div class="grid-header">Baik</div><div class="grid-header">Sangat Baik</div></div>`;
+    itcsItems.forEach((item, idx) => {
+        html += `<div class="grid-5-row"><div style="font-size:13px;">${idx+1}. ${item}</div>`;
+        for (let i = 1; i <= 5; i++) {
+            html += `<div style="text-align:center;"><input type="radio" name="itcs_${idx}" value="${i}" required></div>`;
+        }
+        html += `</div>`;
+    });
+    mandatoryArea.innerHTML = html;
+}
 
-// 2. Render Filter Checkbox
+// Render Checkboxes
 for (let key in additionalEquip) {
     const label = document.createElement('label');
     label.className = 'checkbox-item';
@@ -92,12 +73,11 @@ for (let key in additionalEquip) {
     filterGrid.appendChild(label);
 }
 
-// 3. Render Dynamic Questions
-document.addEventListener('change', function(e) {
+// Logic Tampilan Dinamis (Skala 1-10 sesuai Gambar e49a6b)
+document.addEventListener('change', (e) => {
     if (e.target.classList.contains('cat-filter')) {
         dynamicWrapper.innerHTML = '';
-        const selected = document.querySelectorAll('.cat-filter:checked');
-        selected.forEach(cb => {
+        document.querySelectorAll('.cat-filter:checked').forEach(cb => {
             const data = additionalEquip[cb.value];
             const card = document.createElement('div');
             card.className = 'form-card';
@@ -105,8 +85,7 @@ document.addEventListener('change', function(e) {
             data.items.forEach((item, idx) => {
                 const qDiv = document.createElement('div');
                 qDiv.className = 'question-item';
-                qDiv.innerHTML = `<label>Pemahaman <strong>${item}</strong>: *</label>
-                <div class="scale-container"><span class="extreme-label">Sangat Kurang</span>${generateRadios(cb.value, idx)}<span class="extreme-label">Sangat Baik</span></div>`;
+                qDiv.innerHTML = `<label>Sejauh mana Anda memahami fungsi dan prinsip kerja <strong>${item}</strong>? *</label>${generateScale10(cb.value, idx)}`;
                 card.appendChild(qDiv);
             });
             dynamicWrapper.appendChild(card);
@@ -114,10 +93,11 @@ document.addEventListener('change', function(e) {
     }
 });
 
-// 4. Submit Logic
-document.getElementById('assessmentForm').onsubmit = function(e) {
+document.getElementById('assessmentForm').onsubmit = (e) => {
     e.preventDefault();
     document.getElementById('mainFormPage').style.display = 'none';
     document.getElementById('successPage').classList.remove('hidden');
     window.scrollTo(0, 0);
 };
+
+renderMandatory();
