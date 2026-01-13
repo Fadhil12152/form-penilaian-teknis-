@@ -4,154 +4,123 @@
   <meta charset="UTF-8">
   <title>Form Evaluasi Penilaian Pegawai</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body{font-family:Arial,Helvetica,sans-serif;background:#f2f4f8;margin:0;padding:20px}
-    h2,h3,h4{color:#1a365d;margin-top:0}
-    .container{max-width:1200px;margin:auto;background:#fff;padding:24px;border-radius:8px}
-    .section{margin-bottom:32px}
-    label{font-weight:600;display:block;margin-top:12px}
-    input,select{width:100%;padding:10px;margin-top:6px;border:1px solid #cbd5e0;border-radius:4px}
-
-    /* Equipment checkbox grid */
-    .equipment-list{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-      gap:12px;
-      margin-top:16px
-    }
-    .equipment-item{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border:1px solid #e2e8f0;
-      border-radius:6px;
-      background:#f9fafb
-    }
-    .equipment-item input{transform:scale(1.2)}
-    .equipment-item label{margin:0;font-weight:600;cursor:pointer}
-
-    /* Rating */
-    .rating-question{background:#f7fafc;padding:16px;border-radius:6px;margin-bottom:16px}
-    .scale{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .scale label{font-weight:400}
-
-    button{padding:14px 28px;background:#1a365d;color:#fff;border:none;border-radius:6px;font-size:16px;cursor:pointer}
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <div class="container">
+  <h1>FORM EVALUASI PENILAIAN TERHADAP PEGAWAI</h1>
 
-<h2>FORM EVALUASI PENILAIAN TERHADAP PEGAWAI</h2>
+  <!-- PROFIL PRIBADI -->
+  <section>
+    <h2>Profil Pribadi</h2>
 
-<div class="section">
-  <h3>Profil Pribadi</h3>
-  <label>Nama Lengkap *</label>
-  <input required>
-  <label>NIPP *</label>
-  <input required>
-  <label>Jenis Kelamin *</label>
-  <select required>
-    <option value="">Pilih</option>
-    <option>Pria</option>
-    <option>Wanita</option>
-  </select>
+    <div class="form-group">
+      <label>Nama Lengkap *</label>
+      <input type="text" required>
+    </div>
+
+    <div class="form-group">
+      <label>NIPP *</label>
+      <input type="text" required>
+    </div>
+
+    <div class="form-group">
+      <label>Jenis Kelamin *</label>
+      <select required>
+        <option value="">Pilih</option>
+        <option>Pria</option>
+        <option>Wanita</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- PROFIL JABATAN -->
+  <section>
+    <h2>Profil Jabatan</h2>
+
+    <div class="form-group">
+      <label>Unit Kerja *</label>
+      <select required>
+        <option value="">Pilih</option>
+        <option>Kantor Pusat</option>
+        <option>Daop 1 Jakarta</option>
+        <option>Daop 2 Bandung</option>
+        <option>Daop 3 Cirebon</option>
+        <option>Daop 4 Semarang</option>
+        <option>Daop 5 Purwokerto</option>
+        <option>Daop 6 Yogyakarta</option>
+        <option>Daop 7 Madiun</option>
+        <option>Daop 8 Surabaya</option>
+        <option>Daop 9 Jember</option>
+        <option>LRT Jabodebek</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Jabatan *</label>
+      <select required>
+        <option value="">Pilih</option>
+        <option>Pelaksana</option>
+        <option>Petugas Negative Check</option>
+        <option>Supervisor Perawatan Perbaikan</option>
+        <option>Supervisor Perawatan Preventif</option>
+        <option>Kepala UPT Resor</option>
+        <option>Assistant Manager</option>
+        <option>Specialist</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- PILIH PERALATAN -->
+  <section>
+    <h2>Pemilihan Peralatan yang Dikuasai</h2>
+
+    <div class="equipment-grid">
+      <div class="equipment-card">
+        <input type="checkbox" value="Westrace MK I" class="eq">
+        <span>Westrace MK I</span>
+      </div>
+      <div class="equipment-card">
+        <input type="checkbox" value="MIS 801" class="eq">
+        <span>MIS 801</span>
+      </div>
+      <div class="equipment-card">
+        <input type="checkbox" value="SIL-02" class="eq">
+        <span>SIL-02</span>
+      </div>
+      <div class="equipment-card">
+        <input type="checkbox" value="SIL-02 Next G" class="eq">
+        <span>SIL-02 Next G</span>
+      </div>
+      <div class="equipment-card">
+        <input type="checkbox" value="VPI" class="eq">
+        <span>VPI</span>
+      </div>
+      <div class="equipment-card">
+        <input type="checkbox" value="ELIXS" class="eq">
+        <span>ELIXS</span>
+      </div>
+      <div class="equipment-card">
+        <input type="checkbox" value="SSI" class="eq">
+        <span>SSI</span>
+      </div>
+      <div class="equipment-card">
+        <input type="checkbox" value="BSG-9" class="eq">
+        <span>Motor Wesel BSG-9</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERTANYAAN -->
+  <section>
+    <h2>Pertanyaan Evaluasi</h2>
+    <div id="questions"></div>
+  </section>
+
+  <button class="submit">Kirim</button>
 </div>
 
-<div class="section">
-  <h3>Profil Jabatan</h3>
-  <label>Unit Kerja *</label>
-  <select required>
-    <option value="">Pilih</option>
-    <option>Kantor Pusat</option>
-    <option>Daop 1 Jakarta</option>
-    <option>Daop 2 Bandung</option>
-    <option>Daop 3 Cirebon</option>
-    <option>Daop 4 Semarang</option>
-    <option>Daop 5 Purwokerto</option>
-    <option>Daop 6 Yogyakarta</option>
-    <option>Daop 7 Madiun</option>
-    <option>Daop 8 Surabaya</option>
-    <option>Daop 9 Jember</option>
-    <option>Divre I Sumatra Utara</option>
-    <option>Divre II Sumatra Barat</option>
-    <option>Divre III Palembang</option>
-    <option>Divre IV Tanjungkarang</option>
-    <option>LRT Jabodebek</option>
-  </select>
-
-  <label>Jabatan *</label>
-  <select required>
-    <option value="">Pilih</option>
-    <option>Pelaksana</option>
-    <option>Petugas Negative Check</option>
-    <option>Supervisor Perawatan Perbaikan</option>
-    <option>Supervisor Perawatan Preventif</option>
-    <option>Kepala UPT Resor</option>
-    <option>Kepala UPT Workshop</option>
-    <option>Assistant Manager</option>
-    <option>Specialist</option>
-    <option>Lainnya</option>
-  </select>
-</div>
-
-<div class="section">
-  <h3>Pemilihan Peralatan yang Dikuasai</h3>
-  <div class="equipment-list">
-    <div class="equipment-item"><input type="checkbox" class="eq" value="Westrace MK I"><label>Westrace MK I</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="MIS 801"><label>MIS 801</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="SIL-02"><label>SIL-02</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="SIL-02 Next G"><label>SIL-02 Next G</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="VPI"><label>VPI</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="ELIXS"><label>ELIXS</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="SSI"><label>SSI</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="WESTRACE MK II"><label>WESTRACE MK II</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="BSG-9"><label>Motor Wesel BSG-9</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="S-90"><label>Motor Wesel S-90</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="NSE"><label>Motor Wesel NSE</label></div>
-    <div class="equipment-item"><input type="checkbox" class="eq" value="T84M"><label>Motor Wesel T84M</label></div>
-  </div>
-</div>
-
-<div class="section">
-  <h3>Pertanyaan Evaluasi</h3>
-  <div id="questions"></div>
-</div>
-
-<button>Kirim</button>
-</div>
-
-<script>
-const data = {
-  "Westrace MK I":["HVLM","VPIM","VROM","SOF","NCDC","LCP","Pin terminal di ER"],
-  "MIS 801":["ZRE","ZRI","RE","RI","R","SWH","SWHW","SWZH","SAH","SWR","SWVF","WF","WAD","DW","GA","FRM","FRB","FL","SCHL","LCP","Data Logger","Pin terminal di ER"],
-  "SIL-02":["PLC","Remote I/O","I/O Logic","Relay","Pin Terminal di ER","Data Logger","LCP"],
-  "SIL-02 Next G":["X-SB01","X-CPU","X-COM","X-DI","X-DO","Himatrix F1 DI","Himatrix F2 DO","Himatrix F30","Himatrix F3 DIO","Relay","LCP/VDU","Pin terminal di ER","Data Logger"],
-  "VPI":["CPU/PD","VRD","I/O BUS","SBO","DI","NVI","NVO","CSEX","Relay","LCP"],
-  "ELIXS":["VPM","CPS","UCI","CDU","VIO","Data Logger","VDU","Interface Relay"],
-  "SSI":["MPM","DLM","TFM","Technician Terminal","DMPM","PPM","LCP/VDU"],
-  "WESTRACE MK II":["PM","PIM","ROM","LOM","TCOM","SOM","RSA","SM-MAU","VDU"],
-  "BSG-9":["Komponen Dalam","Fungsi Komponen","Wiring","Terminal Pin"],
-  "S-90":["Komponen Dalam","Fungsi Komponen","Wiring","Terminal Pin"],
-  "NSE":["Komponen Dalam","Fungsi Komponen","Wiring","Terminal Pin"],
-  "T84M":["Komponen Dalam","Fungsi Komponen","Wiring","Terminal Pin"]
-};
-
-const qContainer=document.getElementById('questions');
-document.querySelectorAll('.eq').forEach(cb=>cb.addEventListener('change',render));
-
-function render(){
-  qContainer.innerHTML='';
-  document.querySelectorAll('.eq:checked').forEach(cb=>{
-    const eq=cb.value;
-    const h=document.createElement('h4');h.textContent=eq;qContainer.appendChild(h);
-    data[eq].forEach(m=>{
-      const d=document.createElement('div');d.className='rating-question';
-      d.innerHTML=`<label>Seberapa paham Anda terkait fungsi dan prinsip kerja <b>${m}</b></label><div class="scale">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<label><input type="radio" name="${eq}_${m}" value="${n}"> ${n}</label>`).join('')}</div>`;
-      qContainer.appendChild(d);
-    });
-  });
-}
-</script>
+<script src="script.js"></script>
 </body>
 </html>
